@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class SetPlayerPrefabs : MonoBehaviour
@@ -19,11 +20,17 @@ public class SetPlayerPrefabs : MonoBehaviour
         {
             //if hosting set player prefab to player 1
             Player1Prefab.GetComponent<NetworkObject>().SpawnAsPlayerObject(networkManager.LocalClientId, true);
+
+            //set player animator as p1 version of selected current character
+            Player1Prefab.GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetAnimatorHost();
         }
         else
         {
             //if client set player prefab to player 2
             Player2Prefab.GetComponent<NetworkObject>().SpawnAsPlayerObject(networkManager.LocalClientId, true);
+
+            //set player animator as p2 version of selected current character
+            Player1Prefab.GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetAnimatorClient();
         }
     }
 }
