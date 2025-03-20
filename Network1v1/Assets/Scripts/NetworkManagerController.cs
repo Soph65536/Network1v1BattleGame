@@ -2,32 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NetworkManagerController : MonoBehaviour
 {
+    //reference this as singleton in other scripts
+    [HideInInspector] public static NetworkManagerController Instance { get { return instance; } }
+    private static NetworkManagerController instance;
+
     public NetworkManager networkManager;
 
-
-    [SerializeField] private GameObject MainMenu;
-    [SerializeField] private GameObject AlreadyHostingError;
-    [SerializeField] private GameObject GameFullError;
-
-    private int numOfPlayers;
+    public int numOfPlayers;
 
     private void Awake()
     {
-        numOfPlayers = 0;
-        MainMenu.SetActive(true);
+        //makes sure there is only one network manager controller and it is set to this
+        if(instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
 
-        GameFullError.SetActive(false);
+        numOfPlayers = 0;
     }
 
 
     private void Start()
     {
         networkManager.OnClientConnectedCallback += OnClientConnect;
-
-        networkManager.StartHost();
     }
 
     private void OnClientConnect(ulong obj)
@@ -36,10 +42,12 @@ public class NetworkManagerController : MonoBehaviour
     }
 
 
+    //main menu stuff
+
     private void EnterGame()
     {
         numOfPlayers++;
-        MainMenu.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
     }
 
     public void EnterAsHost()
@@ -50,14 +58,7 @@ public class NetworkManagerController : MonoBehaviour
 
     public void EnterAsClient()
     {
-        if (numOfPlayers < 2)
-        {
-            EnterGame();
-            networkManager.StartClient();
-        }
-        else
-        {
-            GameFullError.SetActive(true);
-        }
+        EnterGame();
+        networkManager.StartClient();
     }
 }
