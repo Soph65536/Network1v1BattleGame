@@ -20,8 +20,7 @@ public class CurrentPlayerCharacter : MonoBehaviour
 
     public CharacterType currentCharacter;
 
-    [SerializeField] private AnimatorController[] HostAnimators;
-    [SerializeField] private AnimatorController[] ClientAnimators;
+    [SerializeField] private AnimatorController[] CharacterAnimators;
 
     private void Awake()
     {
@@ -39,14 +38,9 @@ public class CurrentPlayerCharacter : MonoBehaviour
         currentCharacter = CharacterType.DaddyLongLegs;
     }
 
-    public AnimatorController SetAnimatorHost()
+    public AnimatorController SetCharacterAnimator()
     {
         Debug.Log((int)currentCharacter);
-        return HostAnimators[1];
-    }
-
-    public AnimatorController SetAnimatorClient()
-    {
-        return ClientAnimators[(int)currentCharacter];
+        return CharacterAnimators[1];
     }
 }

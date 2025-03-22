@@ -21,16 +21,20 @@ public class SetPlayerPrefabs : MonoBehaviour
             //if hosting set player prefab to player 1
             Player1Prefab.GetComponent<NetworkObject>().SpawnAsPlayerObject(networkManager.LocalClientId, true);
 
-            //set player animator as p1 version of selected current character
-            Player1Prefab.GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetAnimatorHost();
+            //set player animator as current character
+            Player1Prefab.GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterAnimator();
+            //since player is host then dont flip the sprite renderer
+            Player1Prefab.GetComponentInChildren<SpriteRenderer>().flipX = false;
         }
         else
         {
             //if client set player prefab to player 2
             Player2Prefab.GetComponent<NetworkObject>().SpawnAsPlayerObject(networkManager.LocalClientId, true);
 
-            //set player animator as p2 version of selected current character
-            Player1Prefab.GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetAnimatorClient();
+            //set player animator as current character
+            Player2Prefab.GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterAnimator();
+            //since player is client then flip the sprite renderer
+            Player2Prefab.GetComponentInChildren<SpriteRenderer>().flipX = true;
         }
     }
 }

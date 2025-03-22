@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ecf2da6e4cc572a44af71974ce25beb0
+guid: 49dd3c36a12a641499551a901b3112b4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MothIdle_0
+      name: MothUpperLight_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 841226bd395caa4438a6a038a74dcc0e
-      internalID: 1098439862
+      spriteID: 9c68ecfe9bed493448086e6c0b86451a
+      internalID: -593737080
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MothIdle_1
+      name: MothUpperLight_1
       rect:
         serializedVersion: 2
         x: 256
@@ -145,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eedd7fc419f2d5c419c4c9b15ff6ce4c
-      internalID: 9375927
+      spriteID: 7ca26c0dbd73c1249a682b0e993a7e71
+      internalID: -1499372340
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MothIdle_2
+      name: MothUpperLight_2
       rect:
         serializedVersion: 2
         x: 512
@@ -166,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7aed4b88c97686446ad57ff42d7b8934
-      internalID: -1514518485
+      spriteID: 07a5633a1d44b81489b10df7b9e7eed3
+      internalID: -1622667414
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MothIdle_3
+      name: MothUpperLight_3
       rect:
         serializedVersion: 2
         x: 768
@@ -187,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 81141f51db41ccb4c9ad8555b3ab6db7
-      internalID: -1684636030
+      spriteID: 10847405bcd23a3409f49f1c61c65d58
+      internalID: -1394721392
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MothIdle_4
+      name: MothUpperLight_4
       rect:
         serializedVersion: 2
         x: 1024
@@ -208,8 +208,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94a51213b6bc31248af2a53eab7a468a
-      internalID: 1877471020
+      spriteID: 14137bb1976c44f4ca56d779c9b20579
+      internalID: 714569332
       vertices: []
       indices: 
       edges: []
@@ -225,11 +225,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      MothIdle_0: 1098439862
-      MothIdle_1: 9375927
-      MothIdle_2: -1514518485
-      MothIdle_3: -1684636030
-      MothIdle_4: 1877471020
+      MothUpperLight_0: -593737080
+      MothUpperLight_1: -1499372340
+      MothUpperLight_2: -1622667414
+      MothUpperLight_3: -1394721392
+      MothUpperLight_4: 714569332
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
