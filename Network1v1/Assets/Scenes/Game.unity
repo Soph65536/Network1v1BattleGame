@@ -177,6 +177,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 946743674087571197, guid: c75ca6b229510554ca5b8f2e626e9dfe, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7c1aebd2b16f162449776f2b455dba3c, type: 2}
     - target: {fileID: 5000456125744766837, guid: c75ca6b229510554ca5b8f2e626e9dfe, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5
@@ -232,10 +236,10 @@ PrefabInstance:
     - target: {fileID: 8792751184888296034, guid: c75ca6b229510554ca5b8f2e626e9dfe, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 216222368, guid: 3ab4b842133d7284d91b9e35b15f2506, type: 3}
     - target: {fileID: 8792751184888296034, guid: c75ca6b229510554ca5b8f2e626e9dfe, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

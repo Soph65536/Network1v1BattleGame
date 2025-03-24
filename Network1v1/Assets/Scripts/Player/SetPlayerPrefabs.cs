@@ -23,8 +23,9 @@ public class SetPlayerPrefabs : MonoBehaviour
 
             //set player animator as current character
             Player1Prefab.GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterAnimator();
-            //since player is host then dont flip the sprite renderer
+            //since player is host then dont flip x for the sprite renderer and attack colliders(child child gameobject)
             Player1Prefab.GetComponentInChildren<SpriteRenderer>().flipX = false;
+            Player1Prefab.transform.GetChild(0).transform.GetChild(0).transform.localScale = new Vector3(-1, 1, 1);
         }
         else
         {
