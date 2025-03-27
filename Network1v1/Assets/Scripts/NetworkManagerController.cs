@@ -11,8 +11,7 @@ public class NetworkManagerController : MonoBehaviour
     private static NetworkManagerController instance;
 
     public NetworkManager networkManager;
-
-    public int numOfPlayers;
+    public NetworkVariable<int> numOfPlayers;
 
     private void Awake()
     {
@@ -27,13 +26,14 @@ public class NetworkManagerController : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        numOfPlayers = 0;
+        numOfPlayers = new NetworkVariable<int>(0);
     }
 
 
     private void Start()
     {
         networkManager.OnClientConnectedCallback += OnClientConnect;
+        networkManager.ConnectionApprovalCallback += ApprovalCheck;
     }
 
     private void OnClientConnect(ulong obj)
@@ -41,13 +41,26 @@ public class NetworkManagerController : MonoBehaviour
         Debug.Log("Client Connected");
     }
 
+    private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+    {
+        if(networkManager.ConnectedClientsIds.Count < 2)
+        {
+            response.Approved = true;
+        }
+        else
+        {
+            response.Approved = false;
+            response.Reason = "Game Session is Full";
+        }
+    }
+
 
     //main menu stuff
 
     private void EnterGame()
     {
-        numOfPlayers++;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        numOfPlayers.Value = numOfPlayers.Value + 1;
     }
 
     public void EnterAsHost()
@@ -60,5 +73,10 @@ public class NetworkManagerController : MonoBehaviour
     {
         EnterGame();
         networkManager.StartClient();
+    }
+
+    private void Update()
+    {
+        Debug.Log(numOfPlayers.Value);
     }
 }

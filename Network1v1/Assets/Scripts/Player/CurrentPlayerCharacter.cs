@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class CurrentPlayerCharacter : MonoBehaviour
@@ -20,7 +19,7 @@ public class CurrentPlayerCharacter : MonoBehaviour
 
     public CharacterType currentCharacter;
 
-    [SerializeField] private AnimatorController[] CharacterAnimators;
+    [SerializeField] private RuntimeAnimatorController[] CharacterAnimators;
 
     private void Awake()
     {
@@ -38,7 +37,7 @@ public class CurrentPlayerCharacter : MonoBehaviour
         currentCharacter = CharacterType.DaddyLongLegs;
     }
 
-    public AnimatorController SetCharacterAnimator()
+    public RuntimeAnimatorController SetCharacterAnimator()
     {
         Debug.Log((int)currentCharacter);
         return CharacterAnimators[1];

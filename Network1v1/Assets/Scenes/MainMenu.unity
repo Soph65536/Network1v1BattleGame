@@ -716,8 +716,8 @@ MonoBehaviour:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: cbf12dff268d7514c92aa65071ce8075, type: 2}
     TickRate: 30
-    ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
+    ClientConnectionBufferTimeout: 1
+    ConnectionApproval: 1
     ConnectionData: 
     EnableTimeResync: 0
     TimeResyncInterval: 30
@@ -1280,7 +1280,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkManager: {fileID: 511985132}
-  numOfPlayers: 0
 --- !u!4 &959350016
 Transform:
   m_ObjectHideFlags: 0
@@ -2055,6 +2054,7 @@ MonoBehaviour:
   AlreadyHostingError: {fileID: 1677232356}
   GameFullError: {fileID: 374104124}
   GameEmptyError: {fileID: 578121786}
+  networkManager: {fileID: 511985132}
 --- !u!1 &2082476514
 GameObject:
   m_ObjectHideFlags: 0
@@ -2086,10 +2086,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkManager: {fileID: 511985132}
   currentCharacter: 0
-  HostAnimators:
-  - {fileID: 9100000, guid: 7c1aebd2b16f162449776f2b455dba3c, type: 2}
-  - {fileID: 9100000, guid: 7c1aebd2b16f162449776f2b455dba3c, type: 2}
-  ClientAnimators:
+  CharacterAnimators:
   - {fileID: 9100000, guid: 7c1aebd2b16f162449776f2b455dba3c, type: 2}
   - {fileID: 9100000, guid: 7c1aebd2b16f162449776f2b455dba3c, type: 2}
 --- !u!4 &2082476516

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,8 @@ public class MainMenuButtons : MonoBehaviour
     [SerializeField] private GameObject AlreadyHostingError;
     [SerializeField] private GameObject GameFullError;
     [SerializeField] private GameObject GameEmptyError;
+
+    public NetworkManager networkManager;
 
     private void Awake()
     {
@@ -29,7 +32,7 @@ public class MainMenuButtons : MonoBehaviour
 
     public void PressEnterAsHost()
     {
-        if (NetworkManagerController.Instance.numOfPlayers == 0) //if no players then noone is hosting so can host
+        if (NetworkManagerController.Instance.numOfPlayers.Value == 0) //if no players then noone is hosting so can host
         {
             NetworkManagerController.Instance.EnterAsHost();
         }
@@ -41,7 +44,7 @@ public class MainMenuButtons : MonoBehaviour
 
     public void PressEnterAsClient()
     {
-        switch (NetworkManagerController.Instance.numOfPlayers)
+        switch (NetworkManagerController.Instance.numOfPlayers.Value)
         {
             case 0:
                 //game is empty
