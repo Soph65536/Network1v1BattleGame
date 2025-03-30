@@ -6,23 +6,26 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButtons : MonoBehaviour
 {
+    [SerializeField] private MonitorPlayersJoining monitorPlayersJoining;
+
     [SerializeField] private GameObject AlreadyHostingError;
     [SerializeField] private GameObject GameFullError;
     [SerializeField] private GameObject GameEmptyError;
 
-    public NetworkManager networkManager;
+    [SerializeField] private GameObject CharacterCustomise;
 
     private void Awake()
     {
         AlreadyHostingError.SetActive(false);
         GameFullError.SetActive(false);
         GameEmptyError.SetActive(false);
+        CharacterCustomise.SetActive(false);
     }
 
     //buttons for menu
     public void Customise()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        CharacterCustomise.SetActive(true);
     }
 
     public void QuitGame()
@@ -32,32 +35,52 @@ public class MainMenuButtons : MonoBehaviour
 
     public void PressEnterAsHost()
     {
-        if (NetworkManagerController.Instance.numOfPlayers.Value == 0) //if no players then noone is hosting so can host
-        {
-            NetworkManagerController.Instance.EnterAsHost();
-        }
-        else
-        {
-            AlreadyHostingError.SetActive(true);
-        }
+        //connect as host
+        NetworkManager.Singleton.StartHost();
+        CloseAllMenus();
+
+        //if (monitorPlayersJoining.hasPlayer1RO) //if not the only host then stop
+        //{
+        //    NetworkManager.Singleton.Shutdown();
+        //    AlreadyHostingError.SetActive(true);
+        //}
+        //else //otherwise can host
+        //{
+        //    monitorPlayersJoining.EnterAsHost();
+        //    CloseAllMenus();
+        //}
     }
 
     public void PressEnterAsClient()
     {
-        switch (NetworkManagerController.Instance.numOfPlayers.Value)
-        {
-            case 0:
-                //game is empty
-                GameEmptyError.SetActive(true);
-                break;
-            case 1:
-                //if someone is hosting but game not full then can join
-                NetworkManagerController.Instance.EnterAsClient();
-                break;
-            default:
-                //otherwise game will be full
-                GameFullError.SetActive(true);
-                break;
-        }
+        //connect as client
+        NetworkManager.Singleton.StartClient();
+        CloseAllMenus();
+
+        //if (!monitorPlayersJoining.hasPlayer1RO) //if no host game is empty so cannot join
+        //{
+        //    NetworkManager.Singleton.Shutdown();
+        //    GameEmptyError.SetActive(true);
+        //}
+        //else if(monitorPlayersJoining.hasPlayer2RO) //if already has player 2 then game is full
+        //{
+        //    NetworkManager.Singleton.Shutdown();
+        //    GameFullError.SetActive(true);
+        //}
+        //else //otherwise is hosting but no second player so can join
+        //{
+        //    monitorPlayersJoining.EnterAsClient();
+        //    CloseAllMenus();
+        //}
+    }
+
+    private void CloseAllMenus()
+    {
+        AlreadyHostingError.SetActive(false);
+        GameFullError.SetActive(false);
+        GameEmptyError.SetActive(false);
+        CharacterCustomise.SetActive(false);
+
+        gameObject.SetActive(false);
     }
 }

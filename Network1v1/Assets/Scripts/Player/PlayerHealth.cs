@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : NetworkBehaviour
 {
     const int minHealth = 0;
     const int maxHealth = 100;
@@ -17,18 +18,24 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        health = maxHealth;
+        if (IsOwner)
+        {
+            health = maxHealth;
 
-        gotHit = false;
-        beingHit = false;
+            gotHit = false;
+            beingHit = false;
+        }
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (gotHit && !beingHit)
+        if (IsOwner)
         {
-            StartCoroutine("GetHit");
+            if (gotHit && !beingHit)
+            {
+                StartCoroutine("GetHit");
+            }
         }
     }
 
@@ -66,16 +73,19 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        HitCollider hitCollider = collision.GetComponent<HitCollider>();
-
-        if (hitCollider != null && hitCollider.enabled)
+        if (IsOwner)
         {
-            //remove damage from health
-            health -= hitCollider.damage;
+            HitCollider hitCollider = collision.GetComponent<HitCollider>();
 
-            //got rehit so beinghit is reset and gothit is set to true
-            beingHit = false;
-            gotHit = true;
+            if (hitCollider != null && hitCollider.enabled)
+            {
+                //remove damage from health
+                health -= hitCollider.damage;
+
+                //got rehit so beinghit is reset and gothit is set to true
+                beingHit = false;
+                gotHit = true;
+            }
         }
     }
 }

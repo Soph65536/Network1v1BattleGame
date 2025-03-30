@@ -39,7 +39,6 @@ public class CurrentPlayerCharacter : MonoBehaviour
 
     public RuntimeAnimatorController SetCharacterAnimator()
     {
-        Debug.Log((int)currentCharacter);
         return CharacterAnimators[1];
     }
 }

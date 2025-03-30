@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameError : MonoBehaviour
+public class MenuOverlay : MonoBehaviour
 {
-    public void CloseGameError()
+    public void CloseMenuOverlay()
     {
         gameObject.SetActive(false);
     }
