@@ -11,6 +11,8 @@ public class NetworkManagerController : NetworkBehaviour
     [HideInInspector] public static NetworkManagerController Instance { get { return instance; } }
     private static NetworkManagerController instance;
 
+    [SerializeField] private GameObject GameFullError;
+
     private void Awake()
     {
         //makes sure there is only one network manager controller and it is set to this
@@ -23,6 +25,8 @@ public class NetworkManagerController : NetworkBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        GameFullError.SetActive(false);
     }
 
 
@@ -30,57 +34,32 @@ public class NetworkManagerController : NetworkBehaviour
     {
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnect;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
+
+        NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
     }
 
     private void OnClientConnect(ulong obj)
     {
         Debug.Log("Client Connected");
-        EnterGame();
     }
 
     private void OnClientDisconnect(ulong obj)
     {
         Debug.Log("Client Disconnected");
-
-        //if (IsHost)
-        //{
-        //    hasPlayer1.Value = false;
-        //}
-        //else
-        //{
-        //    hasPlayer2.Value = false;
-        //}
     }
 
-
-    //set player and things once start game session
-
-    private void EnterGame()
+    private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
-        GameObject playerPrefab = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(NetworkManager.Singleton.LocalClientId).gameObject;
-
-        if (NetworkManager.Singleton.IsHost)
+        if (NetworkManager.Singleton.ConnectedClientsIds.Count < 2)
         {
-            //set player initial position
-            playerPrefab.transform.position = new Vector3(-5, 0, 0);
-
-            //set player animator as current character
-            playerPrefab.GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterAnimator();
-
-            //since player is host then dont flip x for the sprite renderer
-            playerPrefab.GetComponentInChildren<SpriteRenderer>().flipX = false;
+            response.Approved = true;
+            response.CreatePlayerObject = true;
         }
         else
         {
-            //set player initial position
-            playerPrefab.transform.position = new Vector3(5, 0, 0);
-
-            //set player animator as current character
-            playerPrefab.GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterAnimator();
-
-            //since player is client then flip the sprite renderer and attack colliders(child child gameobject)
-            playerPrefab.GetComponentInChildren<SpriteRenderer>().flipX = true;
-            playerPrefab.transform.GetChild(0).transform.GetChild(0).transform.localScale = new Vector3(-1, 1, 1);
+            response.Approved = false;
+            response.Reason = "Game Session is Full";
+            GameFullError.SetActive(true);
         }
     }
 }

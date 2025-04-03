@@ -39,6 +39,6 @@ public class CurrentPlayerCharacter : MonoBehaviour
 
     public RuntimeAnimatorController SetCharacterAnimator()
     {
-        return CharacterAnimators[1];
+        return CharacterAnimators[(int)currentCharacter];
     }
 }
