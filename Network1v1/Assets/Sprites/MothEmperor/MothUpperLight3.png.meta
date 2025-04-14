@@ -115,7 +115,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
+        width: 512
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -134,9 +134,9 @@ TextureImporter:
       name: MothUpperLight3_1
       rect:
         serializedVersion: 2
-        x: 256
+        x: 512
         y: 0
-        width: 256
+        width: 512
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -155,9 +155,9 @@ TextureImporter:
       name: MothUpperLight3_2
       rect:
         serializedVersion: 2
-        x: 512
+        x: 1024
         y: 0
-        width: 256
+        width: 512
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -176,9 +176,9 @@ TextureImporter:
       name: MothUpperLight3_3
       rect:
         serializedVersion: 2
-        x: 768
+        x: 1536
         y: 0
-        width: 256
+        width: 512
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -197,9 +197,9 @@ TextureImporter:
       name: MothUpperLight3_4
       rect:
         serializedVersion: 2
-        x: 1024
+        x: 2048
         y: 0
-        width: 256
+        width: 512
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}

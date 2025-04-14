@@ -110,12 +110,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MothUpperLight_0
+      name: MothUpperLight1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
+        width: 512
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -124,40 +124,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9c68ecfe9bed493448086e6c0b86451a
-      internalID: -593737080
+      spriteID: 20798d2f3c672e5419dfcc7942adfc57
+      internalID: 530352672
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MothUpperLight_1
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7ca26c0dbd73c1249a682b0e993a7e71
-      internalID: -1499372340
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MothUpperLight_2
+      name: MothUpperLight1_1
       rect:
         serializedVersion: 2
         x: 512
         y: 0
-        width: 256
+        width: 512
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -166,40 +145,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 07a5633a1d44b81489b10df7b9e7eed3
-      internalID: -1622667414
+      spriteID: 7f5c070ee003f9b49886cc20ed68ec15
+      internalID: -1559493514
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MothUpperLight_3
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 0
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 10847405bcd23a3409f49f1c61c65d58
-      internalID: -1394721392
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MothUpperLight_4
+      name: MothUpperLight1_2
       rect:
         serializedVersion: 2
         x: 1024
         y: 0
-        width: 256
+        width: 512
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -208,8 +166,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14137bb1976c44f4ca56d779c9b20579
-      internalID: 714569332
+      spriteID: 2e8fff1c48afb02419471fcaa569367d
+      internalID: -1843412015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MothUpperLight1_3
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 512
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b33b4b9a9a6687a4db9033a6f8c90bc9
+      internalID: 352533256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MothUpperLight1_4
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 0
+        width: 512
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 418df69ab51614841a2ecdb035c3b9eb
+      internalID: 268890649
       vertices: []
       indices: 
       edges: []
@@ -225,11 +225,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      MothUpperLight_0: -593737080
-      MothUpperLight_1: -1499372340
-      MothUpperLight_2: -1622667414
-      MothUpperLight_3: -1394721392
-      MothUpperLight_4: 714569332
+      MothUpperLight1_0: 530352672
+      MothUpperLight1_1: -1559493514
+      MothUpperLight1_2: -1843412015
+      MothUpperLight1_3: 352533256
+      MothUpperLight1_4: 268890649
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
