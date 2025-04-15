@@ -20,6 +20,9 @@ public class CurrentPlayerCharacter : MonoBehaviour
     public CharacterType currentCharacter;
 
     [SerializeField] private RuntimeAnimatorController[] CharacterAnimators;
+    [SerializeField] private RuntimeAnimatorController[] CharacterSelectImageAnimators;
+    [SerializeField] private Vector2[] CharacterOffsets;
+    [SerializeField] private Vector2[] CharacterSizes;
 
     private void Awake()
     {
@@ -40,5 +43,20 @@ public class CurrentPlayerCharacter : MonoBehaviour
     public RuntimeAnimatorController SetCharacterAnimator()
     {
         return CharacterAnimators[(int)currentCharacter];
+    }
+
+    public RuntimeAnimatorController SetCharacterSelectImageAnimator()
+    {
+        return CharacterSelectImageAnimators[(int)currentCharacter];
+    }
+
+    public Vector2 SetCharacterColliderSize()
+    {
+        return CharacterSizes[(int)currentCharacter];
+    }
+
+    public Vector2 SetCharacterColliderOffset()
+    {
+        return CharacterOffsets[(int)currentCharacter];
     }
 }

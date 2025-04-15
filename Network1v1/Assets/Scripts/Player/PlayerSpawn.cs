@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerSpawn : NetworkBehaviour
 {
+    [SerializeField] private CapsuleCollider2D PlayerCollider;
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -29,6 +31,11 @@ public class PlayerSpawn : NetworkBehaviour
 
         //set player animator as current character
         GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterAnimator();
+
+        //set player colliders based on current character
+        PlayerCollider.size = CurrentPlayerCharacter.Instance.SetCharacterColliderSize();
+        PlayerCollider.offset = CurrentPlayerCharacter.Instance.SetCharacterColliderOffset();
+
         //sync network animator
         GetComponent<NetworkAnimator>().Animator = GetComponentInChildren<Animator>();
     }

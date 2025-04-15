@@ -237,6 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a70cb6dfa2a6247439c0ad92498f9671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerCollider: {fileID: 8209782013648037368}
 --- !u!1 &6995895735315708408
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,6 +393,6 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.25}
-  m_Size: {x: 1.25, y: 2}
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 1}
   m_Direction: 0
