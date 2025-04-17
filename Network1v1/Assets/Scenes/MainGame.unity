@@ -2467,7 +2467,7 @@ MonoBehaviour:
   - {x: 0, y: -0.25}
   CharacterSizes:
   - {x: 1.1, y: 1}
-  - {x: 0.625, y: 1}
+  - {x: 0.7, y: 1}
 --- !u!4 &2082476516
 Transform:
   m_ObjectHideFlags: 0
@@ -2755,7 +2755,7 @@ PrefabInstance:
     - target: {fileID: 8900168436393448131, guid: 7de114fc2395b964aab65601d98ddf99, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9100000, guid: 00dae55a8e3d8f54b9b3f331e393f2c9, type: 2}
     - target: {fileID: 9046987951161563314, guid: 7de114fc2395b964aab65601d98ddf99, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
