@@ -35,27 +35,16 @@ public class PlayerMovement : NetworkBehaviour
         //jump movement
         if (Input.GetKey(KeyCode.W))
         {
-            JumpServerRPC(Vector3.up * jumpHeight * Time.deltaTime);
+            MoveServerRPC(Vector3.up * jumpHeight * Time.deltaTime);
         }
 
-        GravityServerRpc(Vector3.down * Time.deltaTime);
+        //add gravity to player
+        MoveServerRPC(Vector3.down * Time.deltaTime);
     }
 
     [Rpc(SendTo.Server)]
     private void MoveServerRPC(Vector3 movement)
     {
         cc.Move(movement);
-    }
-
-    [Rpc(SendTo.Server)]
-    private void JumpServerRPC(Vector3 jumpMovement)
-    {
-        cc.Move(jumpMovement);
-    }
-
-    [Rpc(SendTo.Server)]
-    private void GravityServerRpc(Vector3 gravityMovement)
-    {
-        cc.Move(gravityMovement);
     }
 }

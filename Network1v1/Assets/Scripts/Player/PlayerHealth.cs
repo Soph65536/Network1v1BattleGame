@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerHealth : NetworkBehaviour
 {
-    const int minHealth = 0;
     const int maxHealth = 100;
 
     const int gotHitAnimationDuration = 200; //(duration in seconds) x 100
@@ -46,7 +45,8 @@ public class PlayerHealth : NetworkBehaviour
         //set animator trigger to being hit
         //
 
-        if (health < minHealth)
+        //move this to gamesessionmanager
+        if (health < 0)
         {
             //lose
         }
@@ -57,7 +57,7 @@ public class PlayerHealth : NetworkBehaviour
         //while you are currently in being hit and the timer is still going
         while(beingHit && gotHitTimer < gotHitAnimationDuration)
         {
-            yield return new WaitForSeconds(0.001f);
+            yield return new WaitForSeconds(0.01f);
             gotHitTimer++;
         }
 
