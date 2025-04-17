@@ -4,39 +4,59 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerSpawn : NetworkBehaviour
 {
-    [SerializeField] private CapsuleCollider2D PlayerCollider;
+    //[SerializeField] private CapsuleCollider2D PlayerCollider;
+
+    private CharacterController cc;
+
+    private void Awake()
+    {
+        //get character controller
+        cc = GetComponent<CharacterController>();
+    }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
 
-        if (NetworkManager.Singleton.IsHost)
+        if (IsServer)
         {
-            //set player initial position
-            transform.position = Vector3.zero + Vector3.left * 5;
-            //since player is host then dont flip x for the sprite renderer
-            GetComponentInChildren<SpriteRenderer>().flipX = false;
-        }
-        else
-        {
-            //set player initial position
-            transform.position = Vector3.zero + Vector3.right * 5;
+            //set player initial position based on if client ID is odd or even
+            transform.position = new Vector3(OwnerClientId % 2 == 0 ? -5 : 5, 0, 0);
 
-            //since player is client then flip the sprite renderer and attack colliders(child child gameobject)
-            GetComponentInChildren<SpriteRenderer>().flipX = true;
-            transform.GetChild(0).transform.GetChild(0).transform.localScale = new Vector3(-1, 1, 1);
+            //enable character controller for server
+            cc.enabled = true;
         }
 
-        //set player animator as current character
-        GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterAnimator();
+        if (IsOwner)
+        {
+            //enable playermovementscript if owner
+            GetComponent<PlayerMovement>().enabled = true;
 
-        //set player colliders based on current character
-        PlayerCollider.size = CurrentPlayerCharacter.Instance.SetCharacterColliderSize();
-        PlayerCollider.offset = CurrentPlayerCharacter.Instance.SetCharacterColliderOffset();
+            if (NetworkManager.Singleton.IsHost)
+            {
+                //since player is host then dont flip x for the sprite renderer
+                GetComponentInChildren<SpriteRenderer>().flipX = false;
+            }
+            else
+            {
+                //since player is client then flip the sprite renderer and attack colliders(child child gameobject)
+                GetComponentInChildren<SpriteRenderer>().flipX = true;
+                transform.GetChild(0).transform.GetChild(0).transform.localScale = new Vector3(-1, 1, 1);
+            }
 
-        //sync network animator
-        GetComponent<NetworkAnimator>().Animator = GetComponentInChildren<Animator>();
+            //set player animator as current character
+            GetComponentInChildren<Animator>().runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterAnimator();
+
+            //set character controller size based on current character
+            cc.radius = CurrentPlayerCharacter.Instance.SetCharacterColliderSize().x;
+            cc.height = CurrentPlayerCharacter.Instance.SetCharacterColliderSize().y;
+            cc.center = CurrentPlayerCharacter.Instance.SetCharacterColliderOffset();
+
+            ////sync network animator
+            //GetComponent<NetworkAnimator>().Animator = GetComponentInChildren<Animator>();
+        }
     }
 }
