@@ -170,7 +170,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1200, y: 970}
+  m_SizeDelta: {x: 960, y: 970}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6424270360317023961
 MonoBehaviour:
@@ -784,7 +784,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -20, y: 20}
-  m_SizeDelta: {x: 700, y: 700}
+  m_SizeDelta: {x: 1000, y: 500}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &6177456085448417731
 CanvasRenderer:
@@ -834,7 +834,7 @@ Animator:
   m_GameObject: {fileID: 4591869933240846817}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 00dae55a8e3d8f54b9b3f331e393f2c9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -858,7 +858,7 @@ GameObject:
   - component: {fileID: 4220114211125125505}
   - component: {fileID: 2722474592908807439}
   m_Layer: 5
-  m_Name: Return
+  m_Name: Ready
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -966,7 +966,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1352524182619479484}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuOverlay, Assembly-CSharp
         m_MethodName: CloseMenuOverlay
         m_Mode: 1
@@ -987,7 +987,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9046987951161563314}
-  - component: {fileID: 1352524182619479484}
+  - component: {fileID: 1411733776214834276}
   - component: {fileID: 7524969902744287542}
   m_Layer: 5
   m_Name: CharacterSelectMenu
@@ -1019,7 +1019,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1352524182619479484
+--- !u!114 &1411733776214834276
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1028,9 +1028,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 5886735110978446873}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adc4c1b2df469504ea16f42030954aed, type: 3}
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 600300550
+  InScenePlacedSourceGlobalObjectIdHash: 272121993
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &7524969902744287542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1101,7 +1110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.392}
+  m_Color: {r: 0.13440128, g: 0.1764706, b: 0.13725491, a: 0.98039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1183,7 +1192,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Return
+  m_text: Ready
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

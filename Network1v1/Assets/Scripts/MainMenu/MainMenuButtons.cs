@@ -29,6 +29,7 @@ public class MainMenuButtons : MonoBehaviour
         //connect as host
         NetworkManager.Singleton.StartHost();
         CloseAllMenus();
+        Customise();
     }
 
     public void PressEnterAsClient()
@@ -36,6 +37,7 @@ public class MainMenuButtons : MonoBehaviour
         //connect as client
         NetworkManager.Singleton.StartClient();
         CloseAllMenus();
+        Customise();
     }
 
     private void CloseAllMenus()

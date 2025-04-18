@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CurrentPlayerCharacter : MonoBehaviour
+public class CurrentPlayerCharacter : NetworkBehaviour
 {
     //reference this as singleton in other scripts
     [HideInInspector] public static CurrentPlayerCharacter Instance { get { return instance; } }
     private static CurrentPlayerCharacter instance;
-
-    public NetworkManager networkManager;
 
     public enum CharacterType
     {
@@ -17,7 +15,7 @@ public class CurrentPlayerCharacter : MonoBehaviour
         MothEmperor
     }
 
-    public CharacterType currentCharacter;
+    public NetworkVariable<Dictionary<ulong, CharacterType>> currentCharacters;
 
     [SerializeField] private RuntimeAnimatorController[] CharacterAnimators;
     [SerializeField] private RuntimeAnimatorController[] CharacterSelectImageAnimators;
@@ -37,26 +35,40 @@ public class CurrentPlayerCharacter : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        currentCharacter = CharacterType.DaddyLongLegs;
+        currentCharacters = new NetworkVariable<Dictionary<ulong, CharacterType>>(writePerm: NetworkVariableWritePermission.Owner);
+        currentCharacters.Value = new Dictionary<ulong, CharacterType>();
     }
 
-    public RuntimeAnimatorController SetCharacterAnimator()
+    private void Update()
     {
-        return CharacterAnimators[(int)currentCharacter];
+        Debug.Log(currentCharacters.Value[OwnerClientId]);
     }
 
-    public RuntimeAnimatorController SetCharacterSelectImageAnimator()
+    public RuntimeAnimatorController SetCharacterAnimator(ulong clientId)
     {
-        return CharacterSelectImageAnimators[(int)currentCharacter];
+        if (!IsOwner) return null;
+
+        return CharacterAnimators[(int)currentCharacters.Value[clientId]];
     }
 
-    public Vector2 SetCharacterColliderSize()
+    public RuntimeAnimatorController SetCharacterSelectImageAnimator(ulong clientId)
     {
-        return CharacterSizes[(int)currentCharacter];
+        if (!IsOwner) return null;
+
+        return CharacterSelectImageAnimators[(int)currentCharacters.Value[clientId]];
     }
 
-    public Vector2 SetCharacterColliderOffset()
+    public Vector2 SetCharacterColliderSize(ulong clientId)
     {
-        return CharacterOffsets[(int)currentCharacter];
+        if (!IsOwner) return Vector2.zero;
+
+        return CharacterSizes[(int)currentCharacters.Value[clientId]];
+    }
+
+    public Vector2 SetCharacterColliderOffset(ulong clientId)
+    {
+        if (!IsOwner) return Vector2.zero;
+
+        return CharacterOffsets[(int)currentCharacters.Value[clientId]];
     }
 }
