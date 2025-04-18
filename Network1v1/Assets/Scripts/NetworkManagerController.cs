@@ -25,8 +25,6 @@ public class NetworkManagerController : NetworkBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-
-        GameFullError.SetActive(false);
     }
 
 
@@ -36,6 +34,8 @@ public class NetworkManagerController : NetworkBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
 
         NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
+
+        GameFullError.SetActive(false);
     }
 
     private void OnClientConnect(ulong obj)
@@ -54,6 +54,7 @@ public class NetworkManagerController : NetworkBehaviour
         {
             response.Approved = true;
             response.CreatePlayerObject = true;
+            return;
         }
         else
         {

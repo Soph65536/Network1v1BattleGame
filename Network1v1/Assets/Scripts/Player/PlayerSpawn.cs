@@ -20,14 +20,6 @@ public class PlayerSpawn : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        if (IsOwner)
-        {
-            //enable playermovementscript if owner
-            GetComponent<PlayerMovement>().enabled = true;
-
-            CurrentPlayerCharacter.Instance.currentCharacters.Value.Add(OwnerClientId, CharacterType.DaddyLongLegs);
-        }
-
         if (IsServer)
         {
             //set player initial position based on if client ID is odd or even
@@ -35,6 +27,14 @@ public class PlayerSpawn : NetworkBehaviour
 
             //enable character controller for server
             cc.enabled = true;
+        }
+
+        if (IsOwner)
+        {
+            //enable playermovementscript if owner
+            GetComponent<PlayerMovement>().enabled = true;
+
+            CurrentPlayerCharacter.Instance.currentCharacters.Value.Add(OwnerClientId, CurrentPlayerCharacter.CharacterType.DaddyLongLegs);
         }
     }
 }

@@ -21,11 +21,14 @@ public class PlayerGameStart : NetworkBehaviour
     public void GameStart()
     {
         //GameSessionManager.Instance.clientsReady.Value++;
-        SetupPlayersClientRpc();
+        if (IsServer)
+        {
+            SetupPlayersServerRpc();
+        }
     }
 
     [Rpc(SendTo.Server)]
-    private void SetupPlayersClientRpc()
+    private void SetupPlayersServerRpc()
     {
         //check to make sure the gameobject we are doing this on is our player
         foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)

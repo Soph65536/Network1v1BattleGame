@@ -10,7 +10,10 @@ public class GameSessionManager : NetworkBehaviour
     [HideInInspector] public static GameSessionManager Instance { get { return instance; } }
     private static GameSessionManager instance;
 
-    public NetworkVariable<int> clientsReady;
+    public NetworkVariable<int> clientsReady = new NetworkVariable<int>(
+        readPerm: NetworkVariableReadPermission.Everyone, 
+        writePerm: NetworkVariableWritePermission.Owner
+        );
 
     private void Awake()
     {
@@ -25,7 +28,6 @@ public class GameSessionManager : NetworkBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        clientsReady = new NetworkVariable<int>(writePerm: NetworkVariableWritePermission.Owner);
         clientsReady.Value = 0;
     }
 

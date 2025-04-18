@@ -8,7 +8,7 @@ public class CharacterSelect : NetworkBehaviour
     private Animator CharacterAnimator;
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         CharacterAnimator = GetComponentInChildren<Animator>();
         UpdateCharacterImage();
@@ -17,19 +17,19 @@ public class CharacterSelect : NetworkBehaviour
     // Update is called once per frame
     void UpdateCharacterImage()
     {
-        CharacterAnimator.runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterSelectImageAnimator(OwnerClientId);
+        CharacterAnimator.runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterSelectImageAnimator(NetworkManager.Singleton.LocalClientId);
     }
 
     //character select buttons
     public void SelectCharacterDaddyLongLegs()
     {
-        CurrentPlayerCharacter.Instance.currentCharacters.Value[OwnerClientId] = CurrentPlayerCharacter.CharacterType.DaddyLongLegs;
+        CurrentPlayerCharacter.Instance.currentCharacters.Value[NetworkManager.Singleton.LocalClientId] = CurrentPlayerCharacter.CharacterType.DaddyLongLegs;
         UpdateCharacterImage();
     }
 
     public void SelectCharacterMothEmperor()
     {
-        CurrentPlayerCharacter.Instance.currentCharacters.Value[OwnerClientId] = CurrentPlayerCharacter.CharacterType.MothEmperor;
+        CurrentPlayerCharacter.Instance.currentCharacters.Value[NetworkManager.Singleton.LocalClientId] = CurrentPlayerCharacter.CharacterType.MothEmperor;
         UpdateCharacterImage();
     }
 

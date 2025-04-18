@@ -8,7 +8,7 @@ public class MainMenuButtons : MonoBehaviour
 {
     [SerializeField] private GameObject CharacterCustomise;
 
-    private void Awake()
+    private void Start()
     {
         CharacterCustomise.SetActive(false);
     }

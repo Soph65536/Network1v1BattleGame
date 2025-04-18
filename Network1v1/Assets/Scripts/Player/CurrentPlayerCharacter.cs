@@ -15,7 +15,10 @@ public class CurrentPlayerCharacter : NetworkBehaviour
         MothEmperor
     }
 
-    public NetworkVariable<Dictionary<ulong, CharacterType>> currentCharacters;
+    public NetworkVariable<Dictionary<ulong, CharacterType>> currentCharacters = new NetworkVariable<Dictionary<ulong, CharacterType>>(
+        readPerm: NetworkVariableReadPermission.Everyone, 
+        writePerm: NetworkVariableWritePermission.Owner
+        );
 
     [SerializeField] private RuntimeAnimatorController[] CharacterAnimators;
     [SerializeField] private RuntimeAnimatorController[] CharacterSelectImageAnimators;
@@ -35,13 +38,16 @@ public class CurrentPlayerCharacter : NetworkBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        currentCharacters = new NetworkVariable<Dictionary<ulong, CharacterType>>(writePerm: NetworkVariableWritePermission.Owner);
         currentCharacters.Value = new Dictionary<ulong, CharacterType>();
     }
 
     private void Update()
     {
-        Debug.Log(currentCharacters.Value[OwnerClientId]);
+        foreach (CharacterType character in currentCharacters.Value.Values)
+        {
+            if (currentCharacters.Value == null) { Debug.Log("Q"); }
+            else { Debug.Log(character.ToString()); }
+        }
     }
 
     public RuntimeAnimatorController SetCharacterAnimator(ulong clientId)
