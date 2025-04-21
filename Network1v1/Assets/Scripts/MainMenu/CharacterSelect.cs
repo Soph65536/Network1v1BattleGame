@@ -7,29 +7,46 @@ public class CharacterSelect : NetworkBehaviour
 {
     private Animator CharacterAnimator;
 
+    //network singletons
+    private CurrentPlayerCharacter currentPlayerCharacter;
+
+    private void Awake()
+    {
+        CharacterAnimator = GetComponentInChildren<Animator>();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
+    }
+
     // Start is called before the first frame update
     void OnEnable()
     {
-        CharacterAnimator = GetComponentInChildren<Animator>();
         UpdateCharacterImage();
     }
 
     // Update is called once per frame
     void UpdateCharacterImage()
     {
-        CharacterAnimator.runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterSelectImageAnimator(NetworkManager.Singleton.LocalClientId);
+        if(currentPlayerCharacter.currentCharacters.Value.ContainsKey(NetworkManager.Singleton.LocalClientId))
+        {
+            CharacterAnimator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterSelectImageAnimator(NetworkManager.Singleton.LocalClientId);
+        }
     }
 
     //character select buttons
     public void SelectCharacterDaddyLongLegs()
     {
-        CurrentPlayerCharacter.Instance.currentCharacters.Value[NetworkManager.Singleton.LocalClientId] = CurrentPlayerCharacter.CharacterType.DaddyLongLegs;
+        currentPlayerCharacter.currentCharacters.Value[NetworkManager.Singleton.LocalClientId] = CurrentPlayerCharacter.CharacterType.DaddyLongLegs;
         UpdateCharacterImage();
     }
 
     public void SelectCharacterMothEmperor()
     {
-        CurrentPlayerCharacter.Instance.currentCharacters.Value[NetworkManager.Singleton.LocalClientId] = CurrentPlayerCharacter.CharacterType.MothEmperor;
+        currentPlayerCharacter.currentCharacters.Value[NetworkManager.Singleton.LocalClientId] = CurrentPlayerCharacter.CharacterType.MothEmperor;
         UpdateCharacterImage();
     }
 

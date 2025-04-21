@@ -10,6 +10,9 @@ public class PlayerSpawn : NetworkBehaviour
 {
     private CharacterController cc;
 
+    //network singletons
+    private CurrentPlayerCharacter currentPlayerCharacter;
+
     private void Awake()
     {
         //get character controller
@@ -19,6 +22,9 @@ public class PlayerSpawn : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        //get currentPlayerCharacter script
+        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
 
         if (IsServer)
         {
@@ -34,7 +40,8 @@ public class PlayerSpawn : NetworkBehaviour
             //enable playermovementscript if owner
             GetComponent<PlayerMovement>().enabled = true;
 
-            CurrentPlayerCharacter.Instance.currentCharacters.Value.Add(OwnerClientId, CurrentPlayerCharacter.CharacterType.DaddyLongLegs);
+            currentPlayerCharacter.currentCharacters.Value.Add(OwnerClientId, CurrentPlayerCharacter.CharacterType.DaddyLongLegs);
+            Debug.Log(currentPlayerCharacter.currentCharacters.Value[OwnerClientId].ToString());
         }
     }
 }

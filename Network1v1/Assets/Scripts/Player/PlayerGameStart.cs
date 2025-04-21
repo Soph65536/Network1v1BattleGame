@@ -9,6 +9,10 @@ public class PlayerGameStart : NetworkBehaviour
     private CharacterController cc;
     private Animator animator;
 
+    //network singletons
+    private CurrentPlayerCharacter currentPlayerCharacter;
+    private GameSessionManager gameSessionManager;
+
     private void Awake()
     {
         //get character controller
@@ -18,21 +22,32 @@ public class PlayerGameStart : NetworkBehaviour
         animator = GetComponentInChildren<Animator>();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        //get currentPlayerCharacter script
+        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
+
+        //get gameSessionManager script
+        gameSessionManager = GameObject.FindFirstObjectByType<GameSessionManager>();
+    }
+
     public void GameStart()
     {
-        //GameSessionManager.Instance.clientsReady.Value++;
-        if (IsServer)
-        {
-            SetupPlayersServerRpc();
-        }
+        SetupPlayersServerRpc();
     }
 
     [Rpc(SendTo.Server)]
     private void SetupPlayersServerRpc()
     {
+        gameSessionManager.clientsReady.Value++;
+
         //check to make sure the gameobject we are doing this on is our player
         foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
         {
+            Debug.Log(((int)currentPlayerCharacter.currentCharacters.Value[client.ClientId]));
+
             if (NetworkManager.Singleton.IsHost)
             {
                 //since player is host then dont flip x for the sprite renderer
@@ -46,15 +61,15 @@ public class PlayerGameStart : NetworkBehaviour
             }
 
             //set player animator as current character
-            animator.runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterAnimator(client.ClientId);
+            animator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterAnimator(client.ClientId);
             //set network animator and controller
             GetComponent<NetworkAnimator>().Animator = animator;
-            GetComponent<NetworkAnimator>().Animator.runtimeAnimatorController = CurrentPlayerCharacter.Instance.SetCharacterAnimator(client.ClientId);
+            GetComponent<NetworkAnimator>().Animator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterAnimator(client.ClientId);
 
             //set character controller size based on current character
-            cc.radius = CurrentPlayerCharacter.Instance.SetCharacterColliderSize(client.ClientId).x;
-            cc.height = CurrentPlayerCharacter.Instance.SetCharacterColliderSize(client.ClientId).y;
-            cc.center = CurrentPlayerCharacter.Instance.SetCharacterColliderOffset(client.ClientId);
+            cc.radius = currentPlayerCharacter.SetCharacterColliderSize(client.ClientId).x;
+            cc.height = currentPlayerCharacter.SetCharacterColliderSize(client.ClientId).y;
+            cc.center = currentPlayerCharacter.SetCharacterColliderOffset(client.ClientId);
         }
     }
 }
