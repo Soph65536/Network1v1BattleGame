@@ -12,6 +12,7 @@ public class PlayerSpawn : NetworkBehaviour
 
     //network singletons
     private CurrentPlayerCharacter currentPlayerCharacter;
+    private GameSessionManager gameSessionManager;
 
     private void Awake()
     {
@@ -23,8 +24,7 @@ public class PlayerSpawn : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        //get currentPlayerCharacter script
-        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
+        StartCoroutine("SetNetworkSingletonRefs");
 
         if (IsServer)
         {
@@ -39,7 +39,28 @@ public class PlayerSpawn : NetworkBehaviour
         {
             //enable playermovementscript if owner
             GetComponent<PlayerMovement>().enabled = true;
+        }
+    }
 
+    private IEnumerator SetNetworkSingletonRefs()
+    {
+        //waits for serverstarted to run so that currentplayercharacter object will definitely exist
+        yield return new WaitForFixedUpdate();
+
+        //get currentPlayerCharacter script
+        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
+
+        //get gameSessionManager
+        gameSessionManager = GameObject.FindFirstObjectByType<GameSessionManager>();
+
+        //set network singletons for other scripts with same dependencies
+        GameObject.FindFirstObjectByType<CharacterSelect>().currentPlayerCharacter = currentPlayerCharacter;
+
+        GetComponent<PlayerGameStart>().currentPlayerCharacter = currentPlayerCharacter;
+        GetComponent<PlayerGameStart>().gameSessionManager = gameSessionManager;
+
+        if (IsOwner)
+        {
             currentPlayerCharacter.currentCharacters.Value.Add(OwnerClientId, CurrentPlayerCharacter.CharacterType.DaddyLongLegs);
             Debug.Log(currentPlayerCharacter.currentCharacters.Value[OwnerClientId].ToString());
         }

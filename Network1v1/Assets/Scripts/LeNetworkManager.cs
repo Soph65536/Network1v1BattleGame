@@ -1,32 +1,28 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
-public class NetworkManagerController : NetworkBehaviour
+public class LeNetworkManager : NetworkManager
 {
     //gameobject prefabs and instances
     [SerializeField] private GameObject CurrentPlayerCharacterPrefab;
-    [HideInInspector] public GameObject CurrentPlayerCharacterInstance;
+    public GameObject CurrentPlayerCharacterInstance;
 
     [SerializeField] private GameObject GameSessionManagerPrefab;
-    [HideInInspector] public GameObject GameSessionManagerInstance;
+    public GameObject GameSessionManagerInstance;
 
-    [SerializeField] private GameObject GameFullError;
+    [SerializeField] private GameObject GameFullErrorPrefab;
+    public GameObject GameFullErrorInstance;
 
     private void Start()
     {
-        NetworkManager.Singleton.OnServerStarted += OnServerStart;
+        OnServerStarted += OnServerStart;
 
-        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnect;
-        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
+        OnClientConnectedCallback += OnClientConnect;
+        OnClientDisconnectCallback += OnClientDisconnect;
 
-        NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
-
-        GameFullError.SetActive(false);
+        ConnectionApprovalCallback += ApprovalCheck;
     }
 
     private void OnServerStart()
@@ -34,6 +30,9 @@ public class NetworkManagerController : NetworkBehaviour
         CurrentPlayerCharacterInstance = Instantiate(CurrentPlayerCharacterPrefab);
 
         GameSessionManagerInstance = Instantiate(GameSessionManagerPrefab);
+
+        GameFullErrorInstance = Instantiate(GameFullErrorPrefab);
+        GameFullErrorInstance.SetActive(false);
     }
 
     private void OnClientConnect(ulong obj)
@@ -58,7 +57,7 @@ public class NetworkManagerController : NetworkBehaviour
         {
             response.Approved = false;
             response.Reason = "Game Session is Full";
-            GameFullError.SetActive(true);
+            GameFullErrorInstance.SetActive(true);
         }
     }
 }

@@ -8,18 +8,11 @@ public class CharacterSelect : NetworkBehaviour
     private Animator CharacterAnimator;
 
     //network singletons
-    private CurrentPlayerCharacter currentPlayerCharacter;
+    [HideInInspector] public CurrentPlayerCharacter currentPlayerCharacter;
 
     private void Awake()
     {
         CharacterAnimator = GetComponentInChildren<Animator>();
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-
-        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
     }
 
     // Start is called before the first frame update
@@ -31,9 +24,12 @@ public class CharacterSelect : NetworkBehaviour
     // Update is called once per frame
     void UpdateCharacterImage()
     {
-        if(currentPlayerCharacter.currentCharacters.Value.ContainsKey(NetworkManager.Singleton.LocalClientId))
+        if (currentPlayerCharacter != null)
         {
-            CharacterAnimator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterSelectImageAnimator(NetworkManager.Singleton.LocalClientId);
+            if (currentPlayerCharacter.currentCharacters.Value.ContainsKey(NetworkManager.Singleton.LocalClientId))
+            {
+                CharacterAnimator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterSelectImageAnimator(NetworkManager.Singleton.LocalClientId);
+            }
         }
     }
 

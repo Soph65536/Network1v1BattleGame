@@ -10,8 +10,8 @@ public class PlayerGameStart : NetworkBehaviour
     private Animator animator;
 
     //network singletons
-    private CurrentPlayerCharacter currentPlayerCharacter;
-    private GameSessionManager gameSessionManager;
+    [HideInInspector] public CurrentPlayerCharacter currentPlayerCharacter;
+    [HideInInspector] public GameSessionManager gameSessionManager;
 
     private void Awake()
     {
@@ -20,17 +20,6 @@ public class PlayerGameStart : NetworkBehaviour
 
         //get animator
         animator = GetComponentInChildren<Animator>();
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-
-        //get currentPlayerCharacter script
-        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
-
-        //get gameSessionManager script
-        gameSessionManager = GameObject.FindFirstObjectByType<GameSessionManager>();
     }
 
     public void GameStart()
