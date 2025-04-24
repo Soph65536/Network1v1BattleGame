@@ -11,7 +11,7 @@ public class PlayerSpawn : NetworkBehaviour
     private CharacterController cc;
 
     //network singletons
-    private CurrentPlayerCharacter currentPlayerCharacter;
+    //private CurrentPlayerCharacter currentPlayerCharacter;
     private GameSessionManager gameSessionManager;
 
     private void Awake()
@@ -48,12 +48,12 @@ public class PlayerSpawn : NetworkBehaviour
         yield return new WaitForFixedUpdate();
 
         //get currentPlayerCharacter script
-        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
+        //currentPlayerCharacter = GetComponent<CurrentPlayerCharacter>();
 
         //get gameSessionManager
         gameSessionManager = GameObject.FindFirstObjectByType<GameSessionManager>();
 
-        GetComponent<PlayerGameStart>().currentPlayerCharacter = currentPlayerCharacter;
+        //GetComponent<PlayerGameStart>().currentPlayerCharacter = currentPlayerCharacter;
         GetComponent<PlayerGameStart>().gameSessionManager = gameSessionManager;
     }
 }

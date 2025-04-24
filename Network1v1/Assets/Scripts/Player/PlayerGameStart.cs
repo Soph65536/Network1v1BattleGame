@@ -10,7 +10,7 @@ public class PlayerGameStart : NetworkBehaviour
     private Animator animator;
 
     //network singletons
-    [HideInInspector] public CurrentPlayerCharacter currentPlayerCharacter;
+    //[HideInInspector] public CurrentPlayerCharacter currentPlayerCharacter;
     [HideInInspector] public GameSessionManager gameSessionManager;
 
     private void Awake()
@@ -24,7 +24,7 @@ public class PlayerGameStart : NetworkBehaviour
 
     public void GameStart()
     {
-        SetupPlayersServerRpc();
+        SetupPlayers();
     }
 
     [Rpc(SendTo.Server)]
@@ -33,37 +33,31 @@ public class PlayerGameStart : NetworkBehaviour
         gameSessionManager.clientsReady.Value++;
     }
 
-    [Rpc(SendTo.Server)]
-    private void SetupPlayersServerRpc()
+    private void SetupPlayers()
     {
-        gameSessionManager.clientsReady.Value++;
-
-        foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
+        if (NetworkManager.Singleton.IsHost)
         {
-            Debug.Log(((int)currentPlayerCharacter.currentCharacter.Value));
-
-            if (NetworkManager.Singleton.IsHost)
-            {
-                //since player is host then dont flip x for the sprite renderer
-                GetComponentInChildren<SpriteRenderer>().flipX = false;
-            }
-            else
-            {
-                //since player is client then flip the sprite renderer and attack colliders(child child gameobject)
-                GetComponentInChildren<SpriteRenderer>().flipX = true;
-                transform.GetChild(0).transform.GetChild(0).transform.localScale = new Vector3(-1, 1, 1);
-            }
-
-            //set player animator as current character
-            animator.runtimeAnimatorController = currentPlayerCharacter.GetCharacterAnimator();
-            //set network animator and controller
-            GetComponent<NetworkAnimator>().Animator = animator;
-            GetComponent<NetworkAnimator>().Animator.runtimeAnimatorController = currentPlayerCharacter.GetCharacterAnimator();
-
-            //set character controller size based on current character
-            cc.radius = currentPlayerCharacter.GetCharacterColliderSize().x;
-            cc.height = currentPlayerCharacter.GetCharacterColliderSize().y;
-            cc.center = currentPlayerCharacter.GetCharacterColliderOffset();
+            //since player is host then dont flip x for the sprite renderer
+            GetComponentInChildren<SpriteRenderer>().flipX = false;
         }
+        else
+        {
+            //since player is client then flip the sprite renderer and attack colliders(child child gameobject)
+            GetComponentInChildren<SpriteRenderer>().flipX = true;
+            transform.GetChild(0).transform.GetChild(0).transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        CurrentPlayerCharacter selectedCharacter = GetComponent<CurrentPlayerCharacter>();
+
+        //set player animator as current character
+        animator.runtimeAnimatorController = selectedCharacter.GetCharacterAnimator();
+        //set network animator and controller
+        GetComponent<NetworkAnimator>().Animator = animator;
+        GetComponent<NetworkAnimator>().Animator.runtimeAnimatorController = selectedCharacter.GetCharacterAnimator();
+
+        //set character controller size based on current character
+        cc.radius = selectedCharacter.GetCharacterColliderSize().x;
+        cc.height = selectedCharacter.GetCharacterColliderSize().y;
+        cc.center = selectedCharacter.GetCharacterColliderOffset();
     }
 }

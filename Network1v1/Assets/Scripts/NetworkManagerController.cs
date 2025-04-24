@@ -39,10 +39,10 @@ public class NetworkManagerController : NetworkBehaviour
             CharacterSelectInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(CharacterSelectPrefab.GetComponent<NetworkObject>()).gameObject;
         }
 
-        if (CurrentPlayerCharacterInstance == null) 
-        { 
-            CurrentPlayerCharacterInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(CurrentPlayerCharacterPrefab.GetComponent<NetworkObject>()).gameObject;
-        }
+        //if (CurrentPlayerCharacterInstance == null) 
+        //{ 
+        //    CurrentPlayerCharacterInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(CurrentPlayerCharacterPrefab.GetComponent<NetworkObject>()).gameObject;
+        //}
 
         if (GameSessionManagerInstance == null)
         {

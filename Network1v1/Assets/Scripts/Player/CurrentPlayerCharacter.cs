@@ -27,6 +27,16 @@ public class CurrentPlayerCharacter : NetworkBehaviour
         Debug.Log(currentCharacter.Value.ToString());
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if(!IsOwner)
+        {
+            enabled = false;
+        }
+    }
+
     public RuntimeAnimatorController GetCharacterAnimator()
     {
         return CharacterAnimators[(int)currentCharacter.Value];
