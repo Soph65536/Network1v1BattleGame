@@ -28,7 +28,7 @@ public class CharacterSelect : NetworkBehaviour
     {
         if (currentPlayerCharacter != null)
         {
-            characterAnimator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterSelectImageAnimator();
+            characterAnimator.runtimeAnimatorController = currentPlayerCharacter.GetCharacterSelectImageAnimator();
         }
     }
 

@@ -55,15 +55,15 @@ public class PlayerGameStart : NetworkBehaviour
             }
 
             //set player animator as current character
-            animator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterAnimator();
+            animator.runtimeAnimatorController = currentPlayerCharacter.GetCharacterAnimator();
             //set network animator and controller
             GetComponent<NetworkAnimator>().Animator = animator;
-            GetComponent<NetworkAnimator>().Animator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterAnimator();
+            GetComponent<NetworkAnimator>().Animator.runtimeAnimatorController = currentPlayerCharacter.GetCharacterAnimator();
 
             //set character controller size based on current character
-            cc.radius = currentPlayerCharacter.SetCharacterColliderSize().x;
-            cc.height = currentPlayerCharacter.SetCharacterColliderSize().y;
-            cc.center = currentPlayerCharacter.SetCharacterColliderOffset();
+            cc.radius = currentPlayerCharacter.GetCharacterColliderSize().x;
+            cc.height = currentPlayerCharacter.GetCharacterColliderSize().y;
+            cc.center = currentPlayerCharacter.GetCharacterColliderOffset();
         }
     }
 }
