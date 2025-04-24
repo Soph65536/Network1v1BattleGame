@@ -31,9 +31,17 @@ public class NetworkManagerController : NetworkBehaviour
 
     private void OnServerStart()
     {
-        CurrentPlayerCharacterInstance = Instantiate(CurrentPlayerCharacterPrefab);
-
-        GameSessionManagerInstance = Instantiate(GameSessionManagerPrefab);
+        if (CurrentPlayerCharacterInstance == null) 
+        { 
+            CurrentPlayerCharacterInstance = Instantiate(CurrentPlayerCharacterPrefab);
+            CurrentPlayerCharacterInstance.GetComponent<NetworkObject>().Spawn();
+        }
+        
+        if (GameSessionManagerInstance == null) 
+        { 
+            GameSessionManagerInstance = Instantiate(GameSessionManagerPrefab);
+            GameSessionManagerInstance.GetComponent<NetworkObject>().Spawn();
+        }
     }
 
     private void OnClientConnect(ulong obj)
