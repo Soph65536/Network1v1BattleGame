@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 6433639219399011810}
   - component: {fileID: 878684657052648784}
   - component: {fileID: 228070621177887337}
+  - component: {fileID: -5318783758723640394}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -290,6 +291,32 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-5318783758723640394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5812923486297844532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ce5751f08385f48ae42d40c5fafeb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentCharacter:
+    m_InternalValue: 0
+  CharacterAnimators:
+  - {fileID: 9100000, guid: c206ff4fb9b45a849b8256da2ad6f376, type: 2}
+  - {fileID: 9100000, guid: 7c1aebd2b16f162449776f2b455dba3c, type: 2}
+  CharacterSelectImageAnimators:
+  - {fileID: 9100000, guid: 00dae55a8e3d8f54b9b3f331e393f2c9, type: 2}
+  - {fileID: 9100000, guid: d03291119826e3042927578888235282, type: 2}
+  CharacterOffsets:
+  - {x: 0.05, y: -0.15}
+  - {x: 0, y: -0.25}
+  CharacterSizes:
+  - {x: 1.1, y: 1}
+  - {x: 0.7, y: 1}
 --- !u!1 &6995895735315708408
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +414,7 @@ Animator:
   m_GameObject: {fileID: 6995895735315708408}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c206ff4fb9b45a849b8256da2ad6f376, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

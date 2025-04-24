@@ -10,10 +10,6 @@ public class PlayerSpawn : NetworkBehaviour
 {
     private CharacterController cc;
 
-    //network singletons
-    private CurrentPlayerCharacter currentPlayerCharacter;
-    private GameSessionManager gameSessionManager;
-
     private void Awake()
     {
         //get character controller
@@ -23,8 +19,6 @@ public class PlayerSpawn : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-
-        StartCoroutine("SetNetworkSingletonRefs");
 
         if (IsServer)
         {
@@ -40,20 +34,5 @@ public class PlayerSpawn : NetworkBehaviour
             //enable playermovementscript if owner
             GetComponent<PlayerMovement>().enabled = true;
         }
-    }
-
-    private IEnumerator SetNetworkSingletonRefs()
-    {
-        //waits for serverstarted to run so that currentplayercharacter object will definitely exist
-        yield return new WaitForFixedUpdate();
-
-        //get currentPlayerCharacter script
-        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
-
-        //get gameSessionManager
-        gameSessionManager = GameObject.FindFirstObjectByType<GameSessionManager>();
-
-        GetComponent<PlayerGameStart>().currentPlayerCharacter = currentPlayerCharacter;
-        GetComponent<PlayerGameStart>().gameSessionManager = gameSessionManager;
     }
 }

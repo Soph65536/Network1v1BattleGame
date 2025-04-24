@@ -22,27 +22,32 @@ public class CurrentPlayerCharacter : NetworkBehaviour
     [SerializeField] private Vector2[] CharacterOffsets;
     [SerializeField] private Vector2[] CharacterSizes;
 
-    private void Update()
+    public override void OnNetworkSpawn()
     {
-        Debug.Log(currentCharacter.Value.ToString());
+        base.OnNetworkSpawn();
+
+        if(!IsOwner)
+        {
+            enabled = false;
+        }
     }
 
-    public RuntimeAnimatorController SetCharacterAnimator()
+    public RuntimeAnimatorController GetCharacterAnimator()
     {
         return CharacterAnimators[(int)currentCharacter.Value];
     }
 
-    public RuntimeAnimatorController SetCharacterSelectImageAnimator()
+    public RuntimeAnimatorController GetCharacterSelectImageAnimator()
     {
         return CharacterSelectImageAnimators[(int)currentCharacter.Value];
     }
 
-    public Vector2 SetCharacterColliderSize()
+    public Vector2 GetCharacterColliderSize()
     {
         return CharacterSizes[(int)currentCharacter.Value];
     }
 
-    public Vector2 SetCharacterColliderOffset()
+    public Vector2 GetCharacterColliderOffset()
     {
         return CharacterOffsets[(int)currentCharacter.Value];
     }

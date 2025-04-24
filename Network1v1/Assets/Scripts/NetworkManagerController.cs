@@ -12,10 +12,8 @@ public class NetworkManagerController : NetworkBehaviour
     [SerializeField] private GameObject CharacterSelectPrefab;
     [HideInInspector] public GameObject CharacterSelectInstance;
 
-    [SerializeField] private GameObject CurrentPlayerCharacterPrefab;
-    [HideInInspector] public GameObject CurrentPlayerCharacterInstance;
-
     [SerializeField] private GameObject GameSessionManagerPrefab;
+    [SerializeField] private GameObject GameSessionManagerUIGameObject;
     [HideInInspector] public GameObject GameSessionManagerInstance;
 
     [SerializeField] private GameObject GameFullError;
@@ -39,20 +37,19 @@ public class NetworkManagerController : NetworkBehaviour
             CharacterSelectInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(CharacterSelectPrefab.GetComponent<NetworkObject>()).gameObject;
         }
 
-        if (CurrentPlayerCharacterInstance == null) 
-        { 
-            CurrentPlayerCharacterInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(CurrentPlayerCharacterPrefab.GetComponent<NetworkObject>()).gameObject;
-        }
-
         if (GameSessionManagerInstance == null)
         {
             GameSessionManagerInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(GameSessionManagerPrefab.GetComponent<NetworkObject>()).gameObject;
+            GameSessionManagerInstance.GetComponent<GameSessionManager>().WaitingForOtherPlayers = GameSessionManagerUIGameObject;
         }
     }
 
     private void OnClientConnect(ulong obj)
     {
         Debug.Log("Client Connected");
+
+        //get game session manager and make sure its waitinforotherplayers is set to the correct gameobject
+        GameObject.FindFirstObjectByType<GameSessionManager>().GetComponent<GameSessionManager>().WaitingForOtherPlayers = GameSessionManagerUIGameObject;
     }
 
     private void OnClientDisconnect(ulong obj)

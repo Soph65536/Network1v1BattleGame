@@ -11,16 +11,27 @@ public class GameSessionManager : NetworkBehaviour
         writePerm: NetworkVariableWritePermission.Server
         );
 
-    private void Start()
+    public GameObject WaitingForOtherPlayers; //UI canvas that shows when you are ready but not all players are
+
+    public override void OnNetworkSpawn()
     {
         clientsReady.OnValueChanged += ClientsReadyValueChanged;
     }
 
     private void ClientsReadyValueChanged(int previousValue, int newValue)
     {
-        if(newValue == 2)
+        Debug.Log(newValue + " players ready");
+        WaitingForOtherPlayers.SetActive(true);
+
+        if (newValue == 2)
         {
-            Debug.Log("Game Start");
+            WaitingForOtherPlayers.SetActive(false);
+            //set player animators
+            var gameStarts = FindObjectsOfType<PlayerGameStart>();
+            foreach (var item in gameStarts)
+            {
+                item.GameStart();
+            }
         }
     }
 }
