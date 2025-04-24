@@ -11,8 +11,8 @@ public class CurrentPlayerCharacter : NetworkBehaviour
         MothEmperor
     }
 
-    public NetworkVariable<Dictionary<ulong, CharacterType>> currentCharacters = new NetworkVariable<Dictionary<ulong, CharacterType>>(
-        value:new Dictionary<ulong, CharacterType>(),
+    public NetworkVariable<CharacterType> currentCharacter = new NetworkVariable<CharacterType>(
+        value:CharacterType.DaddyLongLegs,
         readPerm: NetworkVariableReadPermission.Everyone, 
         writePerm: NetworkVariableWritePermission.Owner
         );
@@ -24,30 +24,26 @@ public class CurrentPlayerCharacter : NetworkBehaviour
 
     private void Update()
     {
-        foreach (CharacterType character in currentCharacters.Value.Values)
-        {
-            if (currentCharacters.Value == null) { Debug.Log("Q"); }
-            else { Debug.Log(character.ToString()); }
-        }
+        Debug.Log(currentCharacter.Value.ToString());
     }
 
-    public RuntimeAnimatorController SetCharacterAnimator(ulong clientId)
+    public RuntimeAnimatorController SetCharacterAnimator()
     {
-        return CharacterAnimators[(int)currentCharacters.Value[clientId]];
+        return CharacterAnimators[(int)currentCharacter.Value];
     }
 
-    public RuntimeAnimatorController SetCharacterSelectImageAnimator(ulong clientId)
+    public RuntimeAnimatorController SetCharacterSelectImageAnimator()
     {
-        return CharacterSelectImageAnimators[(int)currentCharacters.Value[clientId]];
+        return CharacterSelectImageAnimators[(int)currentCharacter.Value];
     }
 
-    public Vector2 SetCharacterColliderSize(ulong clientId)
+    public Vector2 SetCharacterColliderSize()
     {
-        return CharacterSizes[(int)currentCharacters.Value[clientId]];
+        return CharacterSizes[(int)currentCharacter.Value];
     }
 
-    public Vector2 SetCharacterColliderOffset(ulong clientId)
+    public Vector2 SetCharacterColliderOffset()
     {
-        return CharacterOffsets[(int)currentCharacters.Value[clientId]];
+        return CharacterOffsets[(int)currentCharacter.Value];
     }
 }

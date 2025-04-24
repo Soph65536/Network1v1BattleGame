@@ -5,45 +5,51 @@ using UnityEngine;
 
 public class CharacterSelect : NetworkBehaviour
 {
-    private Animator CharacterAnimator;
+    private Animator characterAnimator;
 
     //network singletons
     [HideInInspector] public CurrentPlayerCharacter currentPlayerCharacter;
 
     private void Awake()
     {
-        CharacterAnimator = GetComponentInChildren<Animator>();
+        characterAnimator = GetComponentInChildren<Animator>();
     }
 
     // Start is called before the first frame update
     void OnEnable()
     {
+        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
         UpdateCharacterImage();
     }
+
 
     // Update is called once per frame
     void UpdateCharacterImage()
     {
         if (currentPlayerCharacter != null)
         {
-            if (currentPlayerCharacter.currentCharacters.Value.ContainsKey(NetworkManager.Singleton.LocalClientId))
-            {
-                CharacterAnimator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterSelectImageAnimator(NetworkManager.Singleton.LocalClientId);
-            }
+            characterAnimator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterSelectImageAnimator();
         }
     }
 
     //character select buttons
     public void SelectCharacterDaddyLongLegs()
     {
-        currentPlayerCharacter.currentCharacters.Value[NetworkManager.Singleton.LocalClientId] = CurrentPlayerCharacter.CharacterType.DaddyLongLegs;
+        SelectCharacterServerRpc(CurrentPlayerCharacter.CharacterType.DaddyLongLegs);
         UpdateCharacterImage();
     }
 
     public void SelectCharacterMothEmperor()
     {
-        currentPlayerCharacter.currentCharacters.Value[NetworkManager.Singleton.LocalClientId] = CurrentPlayerCharacter.CharacterType.MothEmperor;
+        SelectCharacterServerRpc(CurrentPlayerCharacter.CharacterType.MothEmperor);
         UpdateCharacterImage();
+    }
+
+    [Rpc(SendTo.Server)]
+    private void SelectCharacterServerRpc(CurrentPlayerCharacter.CharacterType characterType)
+    {
+        currentPlayerCharacter = GameObject.FindFirstObjectByType<CurrentPlayerCharacter>();
+        currentPlayerCharacter.currentCharacter.Value = characterType;
     }
 
     public void Ready()

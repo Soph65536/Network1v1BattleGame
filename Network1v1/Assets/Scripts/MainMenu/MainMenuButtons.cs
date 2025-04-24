@@ -6,19 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButtons : MonoBehaviour
 {
-    [SerializeField] private GameObject CharacterCustomise;
-
-    private void Start()
-    {
-        CharacterCustomise.SetActive(false);
-    }
-
     //buttons for menu
-    public void Customise()
-    {
-        CharacterCustomise.SetActive(true);
-    }
-
     public void QuitGame()
     {
         Application.Quit();
@@ -29,7 +17,6 @@ public class MainMenuButtons : MonoBehaviour
         //connect as host
         NetworkManager.Singleton.StartHost();
         CloseAllMenus();
-        Customise();
     }
 
     public void PressEnterAsClient()
@@ -37,13 +24,10 @@ public class MainMenuButtons : MonoBehaviour
         //connect as client
         NetworkManager.Singleton.StartClient();
         CloseAllMenus();
-        Customise();
     }
 
     private void CloseAllMenus()
     {
-        CharacterCustomise.SetActive(false);
-
         gameObject.SetActive(false);
     }
 }

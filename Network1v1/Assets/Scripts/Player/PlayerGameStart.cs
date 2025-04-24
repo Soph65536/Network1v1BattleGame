@@ -24,18 +24,16 @@ public class PlayerGameStart : NetworkBehaviour
 
     public void GameStart()
     {
-        SetupPlayersServerRpc();
+        SetupPlayers();
     }
 
-    [Rpc(SendTo.Server)]
-    private void SetupPlayersServerRpc()
+    private void SetupPlayers()
     {
         gameSessionManager.clientsReady.Value++;
 
-        //check to make sure the gameobject we are doing this on is our player
         foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
         {
-            Debug.Log(((int)currentPlayerCharacter.currentCharacters.Value[client.ClientId]));
+            Debug.Log(((int)currentPlayerCharacter.currentCharacter.Value));
 
             if (NetworkManager.Singleton.IsHost)
             {
@@ -50,15 +48,15 @@ public class PlayerGameStart : NetworkBehaviour
             }
 
             //set player animator as current character
-            animator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterAnimator(client.ClientId);
+            animator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterAnimator();
             //set network animator and controller
             GetComponent<NetworkAnimator>().Animator = animator;
-            GetComponent<NetworkAnimator>().Animator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterAnimator(client.ClientId);
+            GetComponent<NetworkAnimator>().Animator.runtimeAnimatorController = currentPlayerCharacter.SetCharacterAnimator();
 
             //set character controller size based on current character
-            cc.radius = currentPlayerCharacter.SetCharacterColliderSize(client.ClientId).x;
-            cc.height = currentPlayerCharacter.SetCharacterColliderSize(client.ClientId).y;
-            cc.center = currentPlayerCharacter.SetCharacterColliderOffset(client.ClientId);
+            cc.radius = currentPlayerCharacter.SetCharacterColliderSize().x;
+            cc.height = currentPlayerCharacter.SetCharacterColliderSize().y;
+            cc.center = currentPlayerCharacter.SetCharacterColliderOffset();
         }
     }
 }

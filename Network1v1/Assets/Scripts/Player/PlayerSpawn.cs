@@ -53,16 +53,7 @@ public class PlayerSpawn : NetworkBehaviour
         //get gameSessionManager
         gameSessionManager = GameObject.FindFirstObjectByType<GameSessionManager>();
 
-        //set network singletons for other scripts with same dependencies
-        GameObject.FindFirstObjectByType<CharacterSelect>().currentPlayerCharacter = currentPlayerCharacter;
-
         GetComponent<PlayerGameStart>().currentPlayerCharacter = currentPlayerCharacter;
         GetComponent<PlayerGameStart>().gameSessionManager = gameSessionManager;
-
-        if (IsOwner)
-        {
-            currentPlayerCharacter.currentCharacters.Value.Add(OwnerClientId, CurrentPlayerCharacter.CharacterType.DaddyLongLegs);
-            Debug.Log(currentPlayerCharacter.currentCharacters.Value[OwnerClientId].ToString());
-        }
     }
 }

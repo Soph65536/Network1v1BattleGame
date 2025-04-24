@@ -9,6 +9,9 @@ using UnityEngine.SceneManagement;
 public class NetworkManagerController : NetworkBehaviour
 {
     //gameobject prefabs and instances
+    [SerializeField] private GameObject CharacterSelectPrefab;
+    [HideInInspector] public GameObject CharacterSelectInstance;
+
     [SerializeField] private GameObject CurrentPlayerCharacterPrefab;
     [HideInInspector] public GameObject CurrentPlayerCharacterInstance;
 
@@ -31,16 +34,19 @@ public class NetworkManagerController : NetworkBehaviour
 
     private void OnServerStart()
     {
+        if(CharacterSelectInstance == null)
+        {
+            CharacterSelectInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(CharacterSelectPrefab.GetComponent<NetworkObject>()).gameObject;
+        }
+
         if (CurrentPlayerCharacterInstance == null) 
         { 
-            CurrentPlayerCharacterInstance = Instantiate(CurrentPlayerCharacterPrefab);
-            CurrentPlayerCharacterInstance.GetComponent<NetworkObject>().Spawn();
+            CurrentPlayerCharacterInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(CurrentPlayerCharacterPrefab.GetComponent<NetworkObject>()).gameObject;
         }
-        
-        if (GameSessionManagerInstance == null) 
-        { 
-            GameSessionManagerInstance = Instantiate(GameSessionManagerPrefab);
-            GameSessionManagerInstance.GetComponent<NetworkObject>().Spawn();
+
+        if (GameSessionManagerInstance == null)
+        {
+            GameSessionManagerInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(GameSessionManagerPrefab.GetComponent<NetworkObject>()).gameObject;
         }
     }
 
