@@ -24,10 +24,17 @@ public class PlayerGameStart : NetworkBehaviour
 
     public void GameStart()
     {
-        SetupPlayers();
+        SetupPlayersServerRpc();
     }
 
-    private void SetupPlayers()
+    [Rpc(SendTo.Server)]
+    private void UpdateReadyPlayersServerRpc()
+    {
+        gameSessionManager.clientsReady.Value++;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void SetupPlayersServerRpc()
     {
         gameSessionManager.clientsReady.Value++;
 

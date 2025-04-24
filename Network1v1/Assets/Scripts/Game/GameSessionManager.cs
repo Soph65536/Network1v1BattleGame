@@ -8,12 +8,17 @@ public class GameSessionManager : NetworkBehaviour
     public NetworkVariable<int> clientsReady = new NetworkVariable<int>(
         value: 0,
         readPerm: NetworkVariableReadPermission.Everyone, 
-        writePerm: NetworkVariableWritePermission.Owner
+        writePerm: NetworkVariableWritePermission.Server
         );
 
-    private void Update()
+    private void Start()
     {
-        if(clientsReady.Value >= 2)
+        clientsReady.OnValueChanged += ClientsReadyValueChanged;
+    }
+
+    private void ClientsReadyValueChanged(int previousValue, int newValue)
+    {
+        if(newValue == 2)
         {
             Debug.Log("Game Start");
         }
