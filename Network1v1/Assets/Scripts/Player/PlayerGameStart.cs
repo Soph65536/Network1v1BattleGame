@@ -11,7 +11,6 @@ public class PlayerGameStart : NetworkBehaviour
 
     //network singletons
     //[HideInInspector] public CurrentPlayerCharacter currentPlayerCharacter;
-    [HideInInspector] public GameSessionManager gameSessionManager;
 
     private void Awake()
     {
@@ -25,12 +24,6 @@ public class PlayerGameStart : NetworkBehaviour
     public void GameStart()
     {
         SetupPlayers();
-    }
-
-    [Rpc(SendTo.Server)]
-    private void UpdateReadyPlayersServerRpc()
-    {
-        gameSessionManager.clientsReady.Value++;
     }
 
     private void SetupPlayers()

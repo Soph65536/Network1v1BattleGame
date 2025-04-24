@@ -22,11 +22,6 @@ public class CurrentPlayerCharacter : NetworkBehaviour
     [SerializeField] private Vector2[] CharacterOffsets;
     [SerializeField] private Vector2[] CharacterSizes;
 
-    private void Update()
-    {
-        Debug.Log(currentCharacter.Value.ToString());
-    }
-
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();

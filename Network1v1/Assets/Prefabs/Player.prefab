@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 154465177
+  GlobalObjectIdHash: 3351164916
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -253,8 +253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf9d529ee502e04f9049bf79bcf6b62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPlayerCharacter: {fileID: 0}
-  gameSessionManager: {fileID: 0}
 --- !u!114 &878684657052648784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,7 +414,7 @@ Animator:
   m_GameObject: {fileID: 6995895735315708408}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c206ff4fb9b45a849b8256da2ad6f376, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

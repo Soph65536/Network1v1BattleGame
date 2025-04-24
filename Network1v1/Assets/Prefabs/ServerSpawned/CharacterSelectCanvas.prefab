@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPlayerCharacter: {fileID: 0}
+  gameSessionManager: {fileID: 0}
 --- !u!1001 &8919117890652437000
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -177,6 +178,10 @@ PrefabInstance:
     - target: {fileID: 5886735110978446873, guid: f796fdd52ad344148a1a2b28a2e48cb0, type: 3}
       propertyPath: m_Name
       value: CharacterSelectMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196315491128141794, guid: f796fdd52ad344148a1a2b28a2e48cb0, type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9046987951161563314, guid: f796fdd52ad344148a1a2b28a2e48cb0, type: 3}
       propertyPath: m_Pivot.x

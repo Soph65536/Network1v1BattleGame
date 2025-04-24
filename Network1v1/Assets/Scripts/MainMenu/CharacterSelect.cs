@@ -9,6 +9,7 @@ public class CharacterSelect : NetworkBehaviour
 
     //network singletons
     [HideInInspector] public CurrentPlayerCharacter currentPlayerCharacter;
+    [HideInInspector] public GameSessionManager gameSessionManager;
 
     private void Awake()
     {
@@ -18,6 +19,7 @@ public class CharacterSelect : NetworkBehaviour
     private void Start()
     {
         currentPlayerCharacter = NetworkManager.LocalClient.PlayerObject.GetComponent<CurrentPlayerCharacter>();
+        gameSessionManager = GameObject.FindFirstObjectByType<GameSessionManager>();
         UpdateCharacterImage();
     }
 
@@ -54,11 +56,12 @@ public class CharacterSelect : NetworkBehaviour
     public void Ready()
     {
         gameObject.SetActive(false);
-        //NetworkManager.LocalClient.PlayerObject.GetComponent<PlayerGameStart>().GameStart();
-        var gameStarts = FindObjectsOfType<PlayerGameStart>();
-        foreach (var item in gameStarts)
-        {
-            item.GameStart();
-        }
+        UpdateReadyPlayersServerRpc();
+    }
+
+    [Rpc(SendTo.Server)]
+    private void UpdateReadyPlayersServerRpc()
+    {
+        gameSessionManager.clientsReady.Value++;
     }
 }
