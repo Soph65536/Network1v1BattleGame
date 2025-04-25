@@ -9,6 +9,7 @@ using static CurrentPlayerCharacter;
 public class PlayerSpawn : NetworkBehaviour
 {
     private CharacterController cc;
+    public CurrentPlayerCharacter currentPlayerCharacter;
 
     private void Awake()
     {
@@ -22,9 +23,6 @@ public class PlayerSpawn : NetworkBehaviour
 
         if (IsServer)
         {
-            //set player initial position based on if client ID is odd or even
-            transform.position = new Vector3(OwnerClientId % 2 == 0 ? -5 : 5, 0, 0);
-
             //enable character controller for server
             cc.enabled = true;
         }

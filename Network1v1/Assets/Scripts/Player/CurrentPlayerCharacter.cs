@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CurrentPlayerCharacter : NetworkBehaviour
 {
+    //which character the player is
     public enum CharacterType
     {
         DaddyLongLegs,
@@ -14,6 +15,19 @@ public class CurrentPlayerCharacter : NetworkBehaviour
     public NetworkVariable<CharacterType> currentCharacter = new NetworkVariable<CharacterType>(
         value:CharacterType.DaddyLongLegs,
         readPerm: NetworkVariableReadPermission.Everyone, 
+        writePerm: NetworkVariableWritePermission.Owner
+        );
+
+    //whether the player is spawned on the left(host) or the right(client)
+    public enum SideSpawned
+    {
+        Left,
+        Right
+    }
+
+    public NetworkVariable<SideSpawned> currentSide = new NetworkVariable<SideSpawned>(
+        value:SideSpawned.Left,
+        readPerm: NetworkVariableReadPermission.Everyone,
         writePerm: NetworkVariableWritePermission.Owner
         );
 
@@ -50,5 +64,21 @@ public class CurrentPlayerCharacter : NetworkBehaviour
     public Vector2 GetCharacterColliderOffset()
     {
         return CharacterOffsets[(int)currentCharacter.Value];
+    }
+
+    public void CharacterInitialPosition()
+    {
+        float offset = currentSide.Value == SideSpawned.Left ? -5 : 5;
+        Debug.Log(offset);
+
+        Vector3 newPos = Vector3.right * offset;
+
+        CharacterPositionServerRpc(newPos);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void CharacterPositionServerRpc(Vector3 position)
+    {
+        GetComponent<CharacterController>().Move(position);
     }
 }

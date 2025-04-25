@@ -21,17 +21,21 @@ public class GameSessionManager : NetworkBehaviour
     private void ClientsReadyValueChanged(int previousValue, int newValue)
     {
         Debug.Log(newValue + " players ready");
-        WaitingForOtherPlayers.SetActive(true);
 
         if (newValue == 2)
         {
             WaitingForOtherPlayers.SetActive(false);
+
             //set player animators
             var gameStarts = FindObjectsOfType<PlayerGameStart>();
             foreach (var item in gameStarts)
             {
                 item.GameStart();
             }
+        }
+        else
+        {
+            WaitingForOtherPlayers.SetActive(true);
         }
     }
 }

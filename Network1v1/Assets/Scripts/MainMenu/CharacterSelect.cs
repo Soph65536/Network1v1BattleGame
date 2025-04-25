@@ -18,8 +18,16 @@ public class CharacterSelect : NetworkBehaviour
 
     private void Start()
     {
+        //get refs to things
         currentPlayerCharacter = NetworkManager.LocalClient.PlayerObject.GetComponent<CurrentPlayerCharacter>();
         gameSessionManager = GameObject.FindFirstObjectByType<GameSessionManager>();
+
+        //set what side we are on based on if we are host or client, then set our position based on that
+        currentPlayerCharacter = NetworkManager.LocalClient.PlayerObject.GetComponent<CurrentPlayerCharacter>();
+        currentPlayerCharacter.currentSide.Value = IsHost ? CurrentPlayerCharacter.SideSpawned.Left : CurrentPlayerCharacter.SideSpawned.Right;
+        currentPlayerCharacter.CharacterInitialPosition();
+
+        //update character image so it goes to default at first
         UpdateCharacterImage();
     }
 
@@ -55,6 +63,7 @@ public class CharacterSelect : NetworkBehaviour
 
     public void Ready()
     {
+        //close menu and set this player to ready
         gameObject.SetActive(false);
         UpdateReadyPlayersServerRpc();
     }
