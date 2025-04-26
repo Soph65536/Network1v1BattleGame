@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -76,11 +77,16 @@ public class PlayerHealth : NetworkBehaviour
         if (IsOwner)
         {
             HitCollider hitCollider = collision.GetComponent<HitCollider>();
+            PlayerAttack collisionAttack = hitCollider.GetComponentInParent<PlayerAttack>();
 
+            //if own hitcollider then ignore
+            if(collisionAttack.gameObject == this) return;
+
+            //otherwise take damage
             if (hitCollider != null && hitCollider.enabled)
             {
                 //remove damage from health
-                health -= hitCollider.damage;
+                health -= hitCollider.damage * collisionAttack.damageMultipler;
 
                 //got rehit so beinghit is reset and gothit is set to true
                 beingHit = false;

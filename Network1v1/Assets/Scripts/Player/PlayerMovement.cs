@@ -16,7 +16,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         cc = GetComponent<CharacterController>();
         cc.enabled = false;
-        enabled = false;
+        enabled = false;  //this will only be enabled by the owning player
     }
 
     // Update is called once per frame

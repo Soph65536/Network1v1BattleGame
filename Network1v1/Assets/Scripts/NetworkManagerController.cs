@@ -69,7 +69,6 @@ public class NetworkManagerController : NetworkBehaviour
         {
             response.Approved = false;
             response.Reason = "Game Session is Full";
-            GameFullError.SetActive(true);
         }
     }
 }
