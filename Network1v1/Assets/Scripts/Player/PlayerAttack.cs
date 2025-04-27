@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class PlayerAttack : NetworkBehaviour
 {
+    public NetworkVariable<bool> canAttack = new NetworkVariable<bool>(
+        value: true,
+        readPerm: NetworkVariableReadPermission.Everyone,
+        writePerm: NetworkVariableWritePermission.Owner
+        );
+
     private Animator animator;
 
     public int damageMultipler;
@@ -16,6 +22,8 @@ public class PlayerAttack : NetworkBehaviour
     private void Awake()
     {
         enabled = false; //this will only be enabled by the owning player
+
+        canAttack.Value = true;
 
         //get animator
         animator = GetComponentInChildren<Animator>();
@@ -31,10 +39,13 @@ public class PlayerAttack : NetworkBehaviour
     {
         if(!IsOwner) return;
 
-        if (Input.GetMouseButtonDown(0) && !lightUpperRunning)
+        if (canAttack.Value)
         {
-            StartCoroutine("WaitForLightUpperCombo");
-            LightUpperAttackServerRpc(lightUpperComboNumber);
+            if (Input.GetMouseButtonDown(0) && !lightUpperRunning)
+            {
+                StartCoroutine("WaitForLightUpperCombo");
+                LightUpperAttackServerRpc(lightUpperComboNumber);
+            }
         }
     }
 

@@ -13,7 +13,9 @@ public class NetworkManagerController : NetworkBehaviour
     [HideInInspector] public GameObject CharacterSelectInstance;
 
     [SerializeField] private GameObject GameSessionManagerPrefab;
-    [SerializeField] private GameObject GameSessionManagerUIGameObject;
+    [SerializeField] private GameObject GameSessionManagerWaitingForOtherPlayers;
+    [SerializeField] private GameObject GameSessionManagerRoundEndUI;
+    [SerializeField] private GameObject GameSessionManagerSessionEndUI;
     [HideInInspector] public GameObject GameSessionManagerInstance;
 
     [SerializeField] private GameObject GameFullError;
@@ -40,7 +42,7 @@ public class NetworkManagerController : NetworkBehaviour
         if (GameSessionManagerInstance == null)
         {
             GameSessionManagerInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(GameSessionManagerPrefab.GetComponent<NetworkObject>()).gameObject;
-            GameSessionManagerInstance.GetComponent<GameSessionManager>().WaitingForOtherPlayers = GameSessionManagerUIGameObject;
+            SetGameSessionManageVars();
         }
     }
 
@@ -48,8 +50,7 @@ public class NetworkManagerController : NetworkBehaviour
     {
         Debug.Log("Client Connected");
 
-        //get game session manager and make sure its waitinforotherplayers is set to the correct gameobject
-        GameObject.FindFirstObjectByType<GameSessionManager>().GetComponent<GameSessionManager>().WaitingForOtherPlayers = GameSessionManagerUIGameObject;
+        SetGameSessionManageVars();
     }
 
     private void OnClientDisconnect(ulong obj)
@@ -70,5 +71,14 @@ public class NetworkManagerController : NetworkBehaviour
             response.Approved = false;
             response.Reason = "Game Session is Full";
         }
+    }
+
+    private void SetGameSessionManageVars()
+    {
+        GameSessionManager gameSessionManager = GameObject.FindFirstObjectByType<GameSessionManager>();
+
+        gameSessionManager.WaitingForOtherPlayers = GameSessionManagerWaitingForOtherPlayers;
+        gameSessionManager.RoundEndUI = GameSessionManagerRoundEndUI;
+        gameSessionManager.SessionEndUI = GameSessionManagerSessionEndUI;
     }
 }

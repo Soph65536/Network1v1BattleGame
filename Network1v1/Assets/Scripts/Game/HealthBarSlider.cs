@@ -44,7 +44,7 @@ public class HealthBarSlider : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     public void SetInitialValuesServerRpc()
     {
-        healthSlider.maxValue = ownerPlayerHealth.health.Value;
+        healthSlider.maxValue = PlayerHealth.maxHealth;
         healthSlider.value = healthSlider.maxValue;
     }
 

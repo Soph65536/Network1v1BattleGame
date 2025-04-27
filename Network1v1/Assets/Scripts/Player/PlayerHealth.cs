@@ -7,11 +7,8 @@ using UnityEngine.UI;
 
 public class PlayerHealth : NetworkBehaviour
 {
-    //character controller for collisions
-    private CharacterController cc;
-
     //health vars
-    const int maxHealth = 100;
+    public const int maxHealth = 100;
 
     public NetworkVariable<int> health = new NetworkVariable<int>(
         value: maxHealth,
@@ -28,8 +25,6 @@ public class PlayerHealth : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cc = GetComponent<CharacterController>();
-
         health.Value = maxHealth;
 
         gotHit = false;
@@ -86,12 +81,18 @@ public class PlayerHealth : NetworkBehaviour
             if (hitCollider != null && hitCollider.enabled)
             {
                 //remove damage from health
-                health.Value -= hitCollider.damage * collisionAttack.damageMultipler;
+                RemoveHealthServerRpc(hitCollider.damage/* * collisionAttack.damageMultipler*/);
 
                 //got rehit so beinghit is reset and gothit is set to true
                 beingHit = false;
                 gotHit = true;
             }
         }
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void RemoveHealthServerRpc(int damage)
+    {
+        health.Value -= damage;
     }
 }

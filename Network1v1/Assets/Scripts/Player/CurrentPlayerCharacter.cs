@@ -31,6 +31,14 @@ public class CurrentPlayerCharacter : NetworkBehaviour
         writePerm: NetworkVariableWritePermission.Owner
         );
 
+    //how many wins the player has
+    public NetworkVariable<int> wins = new NetworkVariable<int>(
+        value: 0,
+        readPerm: NetworkVariableReadPermission.Everyone,
+        writePerm: NetworkVariableWritePermission.Owner
+        );
+
+    //stats for different character types
     [SerializeField] private RuntimeAnimatorController[] CharacterAnimators;
     [SerializeField] private RuntimeAnimatorController[] CharacterSelectImageAnimators;
     [SerializeField] private Vector2[] CharacterOffsets;

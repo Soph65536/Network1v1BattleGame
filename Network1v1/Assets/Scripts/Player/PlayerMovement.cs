@@ -6,38 +6,47 @@ using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
 {
+    public NetworkVariable<bool> canMove = new NetworkVariable<bool>(
+        value: true,
+        readPerm: NetworkVariableReadPermission.Everyone,
+        writePerm: NetworkVariableWritePermission.Owner
+        );
+
     private float moveSpeed = 2.5f;
-    private float jumpHeight = 500;
+    private float jumpHeight = 3;
 
     private Rigidbody2D rb;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
         enabled = false;  //this will only be enabled by the owning player
+
+        canMove.Value = true;
+
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //leftrightmovement
-        if (Input.GetKey(KeyCode.A))
+        if (canMove.Value)
         {
-            MoveServerRpc(Vector3.left * moveSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            MoveServerRpc(Vector3.right * moveSpeed * Time.deltaTime);
-        }
+            //leftrightmovement
+            if (Input.GetKey(KeyCode.A))
+            {
+                MoveServerRpc(Vector3.left * moveSpeed * Time.deltaTime);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                MoveServerRpc(Vector3.right * moveSpeed * Time.deltaTime);
+            }
 
-        //jump movement
-        if (Input.GetKey(KeyCode.W))
-        {
-            JumpServerRpc(Vector2.up * jumpHeight * Time.deltaTime);
+            //jump movement
+            if (Input.GetKey(KeyCode.W))
+            {
+                JumpServerRpc(Vector2.up * jumpHeight);
+            }
         }
-
-        ////add gravity to player
-        //MoveServerRPC(Vector3.down * Time.deltaTime);
     }
 
     [Rpc(SendTo.Server)]
