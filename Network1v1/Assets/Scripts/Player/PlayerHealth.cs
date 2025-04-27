@@ -19,9 +19,6 @@ public class PlayerHealth : NetworkBehaviour
         writePerm: NetworkVariableWritePermission.Owner
         );
 
-    //ui reference to health slider
-    public Slider healthSlider;
-
     //getting hit vars
     const int gotHitAnimationDuration = 200; //(duration in seconds) x 100
 
@@ -34,7 +31,6 @@ public class PlayerHealth : NetworkBehaviour
         cc = GetComponent<CharacterController>();
 
         health.Value = maxHealth;
-        health.OnValueChanged += UpdateHealthSlider;
 
         gotHit = false;
         beingHit = false;
@@ -47,17 +43,6 @@ public class PlayerHealth : NetworkBehaviour
         {
             StartCoroutine("GetHit");
         }
-    }
-
-    public void SetHealthSliderValues()
-    {
-        healthSlider.maxValue = maxHealth;
-        healthSlider.value = health.Value;
-    }
-
-    private void UpdateHealthSlider(int previousValue, int newValue)
-    {
-        healthSlider.value = newValue;
     }
 
     public IEnumerator GetHit()

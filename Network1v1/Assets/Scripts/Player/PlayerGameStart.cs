@@ -39,20 +39,7 @@ public class PlayerGameStart : NetworkBehaviour
             //since player is client then flip the sprite renderer and attack colliders(child child gameobject)
             GetComponentInChildren<SpriteRenderer>().flipX = true;
             transform.GetChild(0).transform.GetChild(0).transform.localScale = new Vector3(-1, 1, 1);
-
-            //set health slider to left side
-            characterHealth.healthSlider 
-                = GameObject.FindGameObjectWithTag("RightPlayerHealthSlider").GetComponent<Slider>();
         }
-        else
-        {
-            //set health slider to right side
-            characterHealth.healthSlider
-                = GameObject.FindGameObjectWithTag("LeftPlayerHealthSlider").GetComponent<Slider>();
-        }
-
-        //health slider is now set so run playerhealth sethealthslidervalues
-        characterHealth.SetHealthSliderValues();
 
         //set player animator as current character
         animator.runtimeAnimatorController = selectedCharacter.GetCharacterAnimator();
