@@ -86,4 +86,15 @@ public class CurrentPlayerCharacter : NetworkBehaviour
     {
         transform.position += Vector3.right * offset;
     }
+
+    public void IncreaseWins()
+    {
+        IncreaseWinsEveryoneRpc();
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void IncreaseWinsEveryoneRpc()
+    {
+        wins.Value++;
+    }
 }

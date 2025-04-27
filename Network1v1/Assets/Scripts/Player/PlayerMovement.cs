@@ -6,11 +6,7 @@ using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    public NetworkVariable<bool> canMove = new NetworkVariable<bool>(
-        value: true,
-        readPerm: NetworkVariableReadPermission.Everyone,
-        writePerm: NetworkVariableWritePermission.Owner
-        );
+    public bool canMove;
 
     private float moveSpeed = 2.5f;
     private float jumpHeight = 3;
@@ -21,7 +17,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         enabled = false;  //this will only be enabled by the owning player
 
-        canMove.Value = true;
+        canMove = true;
 
         rb = GetComponent<Rigidbody2D>();
     }
@@ -29,7 +25,7 @@ public class PlayerMovement : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canMove.Value)
+        if (canMove)
         {
             //leftrightmovement
             if (Input.GetKey(KeyCode.A))

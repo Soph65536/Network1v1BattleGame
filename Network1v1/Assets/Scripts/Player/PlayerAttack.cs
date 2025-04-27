@@ -5,11 +5,7 @@ using UnityEngine;
 
 public class PlayerAttack : NetworkBehaviour
 {
-    public NetworkVariable<bool> canAttack = new NetworkVariable<bool>(
-        value: true,
-        readPerm: NetworkVariableReadPermission.Everyone,
-        writePerm: NetworkVariableWritePermission.Owner
-        );
+    public bool canAttack;
 
     private Animator animator;
 
@@ -23,7 +19,7 @@ public class PlayerAttack : NetworkBehaviour
     {
         enabled = false; //this will only be enabled by the owning player
 
-        canAttack.Value = true;
+        canAttack = true;
 
         //get animator
         animator = GetComponentInChildren<Animator>();
@@ -39,7 +35,7 @@ public class PlayerAttack : NetworkBehaviour
     {
         if(!IsOwner) return;
 
-        if (canAttack.Value)
+        if (canAttack)
         {
             if (Input.GetMouseButtonDown(0) && !lightUpperRunning)
             {

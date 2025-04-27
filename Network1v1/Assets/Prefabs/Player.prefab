@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 4561339658845280327}
   - component: {fileID: 1370065502483298128}
   - component: {fileID: 508778657962922734}
-  - component: {fileID: 2910679160778127279}
+  - component: {fileID: 1292958540353258449}
   - component: {fileID: 97278182824247355}
   - component: {fileID: 1748953514295565337}
   - component: {fileID: -5318783758723640394}
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPlayerCharacter: {fileID: 0}
---- !u!114 &2910679160778127279
+--- !u!114 &1292958540353258449
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -381,8 +381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health:
-    m_InternalValue: 217
-  healthSlider: {fileID: 0}
+    m_InternalValue: 100
   gotHit: 0
 --- !u!114 &97278182824247355
 MonoBehaviour:
@@ -396,6 +395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c416666bb6e6b07408298bbd22a0aaf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canAttack: 0
   damageMultipler: 0
   lightUpperRunning: 0
   lightUpperComboNumber: 0
@@ -411,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4281e36affa33447b09e94ee5be73b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canMove: 0
 --- !u!114 &-5318783758723640394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,6 +427,8 @@ MonoBehaviour:
   currentCharacter:
     m_InternalValue: 0
   currentSide:
+    m_InternalValue: 0
+  wins:
     m_InternalValue: 0
   CharacterAnimators:
   - {fileID: 9100000, guid: c206ff4fb9b45a849b8256da2ad6f376, type: 2}

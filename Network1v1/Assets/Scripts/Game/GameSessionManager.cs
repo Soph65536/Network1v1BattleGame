@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameSessionManager : NetworkBehaviour
@@ -17,7 +18,12 @@ public class GameSessionManager : NetworkBehaviour
     public GameObject RoundEndUI; //UI canvas that shows at the end of a round
     public GameObject SessionEndUI; //UI canvas that shows at the end of the game session
 
-    private bool roundEnding; //set to true if roundend is currently running still
+    //set to true if roundend is currently running still
+    public NetworkVariable<bool> roundEnding = new NetworkVariable<bool>(
+        value: false,
+        readPerm: NetworkVariableReadPermission.Everyone,
+        writePerm: NetworkVariableWritePermission.Server
+        );
 
     public override void OnNetworkSpawn()
     {
@@ -37,6 +43,7 @@ public class GameSessionManager : NetworkBehaviour
             foreach (var item in gameStarts)
             {
                 item.GameStart();
+                item.GetComponent<CurrentPlayerCharacter>().wins.OnValueChanged += CheckForPlayerWins;
             }
         }
         else
@@ -47,7 +54,7 @@ public class GameSessionManager : NetworkBehaviour
 
     private void Update()
     {
-        if (!roundEnding) {
+        if (!roundEnding.Value) {
             //check players for death
             var playerHealths = FindObjectsOfType<PlayerHealth>();
             foreach (var player in playerHealths)
@@ -61,12 +68,12 @@ public class GameSessionManager : NetworkBehaviour
         }
     }
 
-    [Rpc(SendTo.Everyone)]
+
+    [Rpc(SendTo.Server)]
     private void ResetGameServerRpc(CurrentPlayerCharacter.SideSpawned losingSide)
     {
-        roundEnding = true;
-
-        bool sessionEnded = false; //this is set to true if session ended so it doesn't show the KO screen
+        if (roundEnding.Value) { return; }
+        roundEnding.Value = true;
 
         //check players for whichever one is this side
         var playerCharacters = FindObjectsOfType<CurrentPlayerCharacter>();
@@ -75,76 +82,91 @@ public class GameSessionManager : NetworkBehaviour
             if (player.currentSide.Value != losingSide)
             {
                 //if not the loser then won so increase wins
-                player.wins.Value++;
-
-                //if player has more than 2 wins then session end
-                if (player.wins.Value >= 2)
-                {
-                    sessionEnded = true;
-                    StartCoroutine("SessionEnd", player);
-                }
+                player.IncreaseWinsEveryoneRpc();
             }
 
             //disable player movement and attack
-            player.GetComponent<PlayerMovement>().canMove.Value = false;
-            player.GetComponent<PlayerAttack>().canAttack.Value = false;
+            player.GetComponent<PlayerMovement>().canMove = false;
+            player.GetComponent<PlayerAttack>().canAttack = false;
         }
 
-        if (!sessionEnded)
-        {
-            //session hasn't ended so run round end to reset the round
-            StartCoroutine("RoundEnd");
-        }
+        //run round end to reset the round
+        StartCoroutine("RoundEnd");
     }
+
 
     private IEnumerator RoundEnd()
     {
-        RoundEndUI.SetActive(true);
+        RoundEndUIActiveEveryoneRpc();
         yield return new WaitForSeconds(2);
-        RoundEndUI.SetActive(false);
+        RoundEndUIInactiveEveryoneRpc();
 
         var playerHealths = FindObjectsOfType<PlayerHealth>();
         foreach (var player in playerHealths)
         {
+            Debug.Log(player.health.Value);
             //reset player position and health
             player.transform.position = Vector3.zero;
             player.GetComponent<CurrentPlayerCharacter>().CharacterInitialPosition();
             player.health.Value = PlayerHealth.maxHealth;
 
             //reenable player movement and attack
-            player.GetComponent<PlayerMovement>().canMove.Value = true;
-            player.GetComponent<PlayerAttack>().canAttack.Value = true;
+            player.GetComponent<PlayerMovement>().canMove = true;
+            player.GetComponent<PlayerAttack>().canAttack = true;
         }
 
-        roundEnding = false;
+        roundEnding .Value = false;
     }
 
-    private IEnumerator SessionEnd(CurrentPlayerCharacter winningPlayer)
+    [Rpc(SendTo.Everyone)]
+    private void RoundEndUIActiveEveryoneRpc()
     {
-        string winningPlayerName = winningPlayer.currentSide.Value == CurrentPlayerCharacter.SideSpawned.Left ? "Host" : "Client";
+        RoundEndUI.SetActive(true);
+    }
 
-        SessionEndUI.SetActive(true);
-        SessionEndUI.GetComponentInChildren<TextMeshProUGUI>().text = winningPlayerName + " Wins!";
+    [Rpc(SendTo.Everyone)]
+    private void RoundEndUIInactiveEveryoneRpc()
+    {
+        RoundEndUI.SetActive(false);
+    }
+
+
+    private void CheckForPlayerWins(int previousValue, int newValue)
+    {
+        //if player has more than 2 wins then session end
+        if (newValue >= 2)
+        {
+            StartCoroutine("SessionEnd");
+        }
+    }
+
+    private IEnumerator SessionEnd()
+    {
+        RoundEndUIInactiveEveryoneRpc(); //session ending so disable KO screen
+
+        string winningPlayerName = string.Empty; //this will have the name of the winner in
+
+        var playerCharacters = FindObjectsOfType<CurrentPlayerCharacter>();
+        foreach (var player in playerCharacters)
+        {
+            if (player.wins.Value >= 2)
+            {
+                //if player has 2 or more wins then they are the winning player
+                winningPlayerName = player.currentSide.Value == CurrentPlayerCharacter.SideSpawned.Left ? "Host" : "Client";
+            }
+        }
+
+        SessionEndUIEveryoneRpc(winningPlayerName);
 
         yield return new WaitForSeconds(10);
         NetworkManager.Singleton.Shutdown(); //session over so kick players from game
+        Application.Quit(); //quit da game
     }
 
     [Rpc(SendTo.Everyone)]
-    private void RoundEndUIActiveServerRpc()
+    private void SessionEndUIEveryoneRpc(string winningPlayerName)
     {
-        
-    }
-
-    [Rpc(SendTo.Everyone)]
-    private void RoundEndUIInactiveServerRpc()
-    {
-        
-    }
-
-    [Rpc(SendTo.Everyone)]
-    private void SessionEndUIServerRpc(string winningPlayerName)
-    {
-        
+        SessionEndUI.SetActive(true);
+        SessionEndUI.GetComponentInChildren<TextMeshProUGUI>().text = winningPlayerName + " Wins!";
     }
 }

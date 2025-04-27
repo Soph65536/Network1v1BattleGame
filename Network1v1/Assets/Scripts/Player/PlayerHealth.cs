@@ -13,7 +13,7 @@ public class PlayerHealth : NetworkBehaviour
     public NetworkVariable<int> health = new NetworkVariable<int>(
         value: maxHealth,
         readPerm: NetworkVariableReadPermission.Everyone,
-        writePerm: NetworkVariableWritePermission.Owner
+        writePerm: NetworkVariableWritePermission.Server
         );
 
     //getting hit vars
@@ -25,8 +25,6 @@ public class PlayerHealth : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        health.Value = maxHealth;
-
         gotHit = false;
         beingHit = false;
     }
@@ -90,7 +88,7 @@ public class PlayerHealth : NetworkBehaviour
         }
     }
 
-    [Rpc(SendTo.Everyone)]
+    [Rpc(SendTo.Server)]
     private void RemoveHealthServerRpc(int damage)
     {
         health.Value -= damage;
