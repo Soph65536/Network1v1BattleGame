@@ -16,6 +16,12 @@ public class NetworkManagerController : NetworkBehaviour
     [SerializeField] private GameObject GameSessionManagerUIGameObject;
     [HideInInspector] public GameObject GameSessionManagerInstance;
 
+    [SerializeField] private GameObject LeftHealthBarPrefab;
+    [HideInInspector] public GameObject LeftHealthBarInstance;
+
+    [SerializeField] private GameObject RightHealthBarPrefab;
+    [HideInInspector] public GameObject RightHealthBarInstance;
+
     [SerializeField] private GameObject GameFullError;
 
     private void Start()
@@ -41,6 +47,16 @@ public class NetworkManagerController : NetworkBehaviour
         {
             GameSessionManagerInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(GameSessionManagerPrefab.GetComponent<NetworkObject>()).gameObject;
             GameSessionManagerInstance.GetComponent<GameSessionManager>().WaitingForOtherPlayers = GameSessionManagerUIGameObject;
+        }
+
+        if(LeftHealthBarInstance == null)
+        {
+            LeftHealthBarInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(LeftHealthBarPrefab.GetComponent<NetworkObject>()).gameObject;
+        }
+
+        if (RightHealthBarInstance == null)
+        {
+            RightHealthBarInstance = NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(RightHealthBarPrefab.GetComponent<NetworkObject>()).gameObject;
         }
     }
 

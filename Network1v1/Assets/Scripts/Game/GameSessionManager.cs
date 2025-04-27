@@ -38,4 +38,17 @@ public class GameSessionManager : NetworkBehaviour
             WaitingForOtherPlayers.SetActive(true);
         }
     }
+
+    private void Update()
+    {
+        //check players for death
+        var playerHealths = FindObjectsOfType<PlayerHealth>();
+        foreach (var player in playerHealths)
+        {
+            if(player.health.Value <= 0)
+            {
+                //they lose!!
+            }
+        }
+    }
 }

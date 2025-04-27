@@ -4,18 +4,16 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : NetworkBehaviour
 {
     private float moveSpeed = 2.5f;
-    private float jumpHeight = 3;
+    private float jumpHeight = 500;
 
-    private CharacterController cc;
+    private Rigidbody2D rb;
 
     private void Awake()
     {
-        cc = GetComponent<CharacterController>();
-        cc.enabled = false;
+        rb = GetComponent<Rigidbody2D>();
         enabled = false;  //this will only be enabled by the owning player
     }
 
@@ -25,26 +23,32 @@ public class PlayerMovement : NetworkBehaviour
         //leftrightmovement
         if (Input.GetKey(KeyCode.A))
         {
-            MoveServerRPC(Vector3.left * moveSpeed * Time.deltaTime);
+            MoveServerRpc(Vector3.left * moveSpeed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            MoveServerRPC(Vector3.right * moveSpeed * Time.deltaTime);
+            MoveServerRpc(Vector3.right * moveSpeed * Time.deltaTime);
         }
 
         //jump movement
         if (Input.GetKey(KeyCode.W))
         {
-            MoveServerRPC(Vector3.up * jumpHeight * Time.deltaTime);
+            JumpServerRpc(Vector2.up * jumpHeight * Time.deltaTime);
         }
 
-        //add gravity to player
-        MoveServerRPC(Vector3.down * Time.deltaTime);
+        ////add gravity to player
+        //MoveServerRPC(Vector3.down * Time.deltaTime);
     }
 
     [Rpc(SendTo.Server)]
-    private void MoveServerRPC(Vector3 movement)
+    private void MoveServerRpc(Vector3 movement)
     {
-        cc.Move(movement);
+        transform.position += movement;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void JumpServerRpc(Vector2 movement)
+    {
+        rb.velocity = movement;
     }
 }

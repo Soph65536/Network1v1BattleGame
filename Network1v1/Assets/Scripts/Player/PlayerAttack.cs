@@ -9,8 +9,8 @@ public class PlayerAttack : NetworkBehaviour
 
     public int damageMultipler;
 
-    private bool lightUpperRunning;
-    private int lightUpperComboNumber;
+    [SerializeField] private bool lightUpperRunning;
+    [SerializeField] private int lightUpperComboNumber;
     const int maxLightUpperCombo = 3;
 
     private void Awake()
@@ -34,7 +34,7 @@ public class PlayerAttack : NetworkBehaviour
         if (Input.GetMouseButtonDown(0) && !lightUpperRunning)
         {
             StartCoroutine("WaitForLightUpperCombo");
-            LightUpperAttackServerRpc();
+            LightUpperAttackServerRpc(lightUpperComboNumber);
         }
     }
 
@@ -44,7 +44,7 @@ public class PlayerAttack : NetworkBehaviour
 
         lightUpperComboNumber++;
 
-        if(lightUpperComboNumber >= maxLightUpperCombo)
+        if(lightUpperComboNumber > maxLightUpperCombo)
         {
             //if combo has been completed it is set back to the first attack of the combo
             lightUpperComboNumber = 1;
@@ -58,7 +58,7 @@ public class PlayerAttack : NetworkBehaviour
         lightUpperRunning = false;
 
         //wait for the max time between combos
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
 
         //if combo state has stayed the same then light upper hasn't been pressed
         //so reset the combo
@@ -69,9 +69,9 @@ public class PlayerAttack : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void LightUpperAttackServerRpc()
+    private void LightUpperAttackServerRpc(int comboNumber)
     {
-        switch (lightUpperComboNumber)
+        switch (comboNumber)
         {
             case 2:
                 animator.SetTrigger("Light Upper 2");

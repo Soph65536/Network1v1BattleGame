@@ -69,16 +69,13 @@ public class CurrentPlayerCharacter : NetworkBehaviour
     public void CharacterInitialPosition()
     {
         float offset = currentSide.Value == SideSpawned.Left ? -5 : 5;
-        Debug.Log(offset);
 
-        Vector3 newPos = Vector3.right * offset;
-
-        CharacterPositionServerRpc(newPos);
+        CharacterPositionServerRpc(offset);
     }
 
     [Rpc(SendTo.Server)]
-    private void CharacterPositionServerRpc(Vector3 position)
+    private void CharacterPositionServerRpc(float offset)
     {
-        GetComponent<CharacterController>().Move(position);
+        transform.position += Vector3.right * offset;
     }
 }

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerGameStart : NetworkBehaviour
 {
-    private CharacterController cc;
+    private CapsuleCollider2D capsuleCollider;
     private Animator animator;
 
     //network singletons
@@ -15,7 +16,7 @@ public class PlayerGameStart : NetworkBehaviour
     private void Awake()
     {
         //get character controller
-        cc = GetComponent<CharacterController>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
 
         //get animator
         animator = GetComponentInChildren<Animator>();
@@ -29,6 +30,7 @@ public class PlayerGameStart : NetworkBehaviour
     private void SetupPlayers()
     {
         CurrentPlayerCharacter selectedCharacter = GetComponent<CurrentPlayerCharacter>();
+        PlayerHealth characterHealth = GetComponent<PlayerHealth>();
 
         //Debug.Log(selectedCharacter.IsLocalPlayer+"\n"+selectedCharacter.currentCharacter.Value+"\n"+selectedCharacter.currentSide.Value);
 
@@ -37,7 +39,20 @@ public class PlayerGameStart : NetworkBehaviour
             //since player is client then flip the sprite renderer and attack colliders(child child gameobject)
             GetComponentInChildren<SpriteRenderer>().flipX = true;
             transform.GetChild(0).transform.GetChild(0).transform.localScale = new Vector3(-1, 1, 1);
+
+            //set health slider to left side
+            characterHealth.healthSlider 
+                = GameObject.FindGameObjectWithTag("RightPlayerHealthSlider").GetComponent<Slider>();
         }
+        else
+        {
+            //set health slider to right side
+            characterHealth.healthSlider
+                = GameObject.FindGameObjectWithTag("LeftPlayerHealthSlider").GetComponent<Slider>();
+        }
+
+        //health slider is now set so run playerhealth sethealthslidervalues
+        characterHealth.SetHealthSliderValues();
 
         //set player animator as current character
         animator.runtimeAnimatorController = selectedCharacter.GetCharacterAnimator();
@@ -45,9 +60,8 @@ public class PlayerGameStart : NetworkBehaviour
         //GetComponent<NetworkAnimator>().Animator = animator;
         //GetComponent<NetworkAnimator>().Animator.runtimeAnimatorController = selectedCharacter.GetCharacterAnimator();
 
-        //set character controller size based on current character
-        cc.radius = selectedCharacter.GetCharacterColliderSize().x;
-        cc.height = selectedCharacter.GetCharacterColliderSize().y;
-        cc.center = selectedCharacter.GetCharacterColliderOffset();
+        //set collider size/offset based on current character
+        capsuleCollider.size = selectedCharacter.GetCharacterColliderSize();
+        capsuleCollider.offset = selectedCharacter.GetCharacterColliderOffset();
     }
 }
