@@ -17,16 +17,21 @@ public class PlayerHealth : NetworkBehaviour
         );
 
     //getting hit vars
-    const int gotHitAnimationDuration = 200; //(duration in seconds) x 100
+    const int gotHitAnimationDuration = 100; //(duration in seconds) x 100
 
     public bool gotHit;
     private bool beingHit;
 
+    private Animator animator;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         gotHit = false;
         beingHit = false;
+
+        //get animator
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -43,8 +48,7 @@ public class PlayerHealth : NetworkBehaviour
         beingHit = true;
 
         //set animator trigger to being hit
-        //
-
+        HitAnimationTrueServerRpc();
 
         int gotHitTimer = 0;
 
@@ -60,6 +64,8 @@ public class PlayerHealth : NetworkBehaviour
         //this prevent these bools from being reset/changed if you get hit multiple times in a row
         if (beingHit)
         {
+            HitAnimationFalseServerRpc(); //no longer being hit so animator hit is false
+
             gotHit = false;
             beingHit = false;
         }
@@ -70,18 +76,19 @@ public class PlayerHealth : NetworkBehaviour
         if (IsOwner)
         {
             HitCollider hitCollider = collision.GetComponent<HitCollider>();
-            PlayerAttack collisionAttack = hitCollider.GetComponentInParent<PlayerAttack>();
 
             //if own hitcollider then ignore
-            if(collisionAttack.gameObject == this) return;
+            if(hitCollider == GetComponentInChildren<HitCollider>()) return;
 
             //otherwise take damage
             if (hitCollider != null && hitCollider.enabled)
             {
                 //remove damage from health
-                RemoveHealthServerRpc(hitCollider.damage/* * collisionAttack.damageMultipler*/);
+                RemoveHealthServerRpc(hitCollider.damage);
 
-                //got rehit so beinghit is reset and gothit is set to true
+                //got rehit so beinghit and animator are reset and gothit is set to true
+                HitAnimationFalseServerRpc();
+
                 beingHit = false;
                 gotHit = true;
             }
@@ -92,5 +99,17 @@ public class PlayerHealth : NetworkBehaviour
     private void RemoveHealthServerRpc(int damage)
     {
         health.Value -= damage;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void HitAnimationTrueServerRpc()
+    {
+        animator.SetBool("Hit", true);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void HitAnimationFalseServerRpc()
+    {
+        animator.SetBool("Hit", false);
     }
 }

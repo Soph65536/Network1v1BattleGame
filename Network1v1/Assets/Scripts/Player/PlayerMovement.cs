@@ -8,9 +8,14 @@ public class PlayerMovement : NetworkBehaviour
 {
     public bool canMove;
 
+    public bool onGround;
+
     private float moveSpeed = 2.5f;
     private float jumpHeight = 3;
 
+    private float slamAttackSpeed = 5;
+
+    private Animator animator;
     private Rigidbody2D rb;
 
     private void Awake()
@@ -19,6 +24,10 @@ public class PlayerMovement : NetworkBehaviour
 
         canMove = true;
 
+        onGround = false;
+
+        //get animator and rigidbody
+        animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -27,20 +36,29 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (canMove)
         {
-            //leftrightmovement
-            if (Input.GetKey(KeyCode.A))
+            //if doing plunge attack then call jump downwards
+            if (GetComponent<PlayerAttack>().slamRunning)
             {
-                MoveServerRpc(Vector3.left * moveSpeed * Time.deltaTime);
+                JumpServerRpc(Vector2.down * jumpHeight);
             }
-            if (Input.GetKey(KeyCode.D))
+            //otherwise can move normally
+            else
             {
-                MoveServerRpc(Vector3.right * moveSpeed * Time.deltaTime);
-            }
+                //leftrightmovement
+                if (Input.GetKey(KeyCode.A))
+                {
+                    MoveServerRpc(Vector3.left * moveSpeed * Time.deltaTime);
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    MoveServerRpc(Vector3.right * moveSpeed * Time.deltaTime);
+                }
 
-            //jump movement
-            if (Input.GetKey(KeyCode.W))
-            {
-                JumpServerRpc(Vector2.up * jumpHeight);
+                //jump movement
+                if (Input.GetKey(KeyCode.W))
+                {
+                    JumpServerRpc(Vector2.up * slamAttackSpeed);
+                }
             }
         }
     }
@@ -55,5 +73,29 @@ public class PlayerMovement : NetworkBehaviour
     private void JumpServerRpc(Vector2 movement)
     {
         rb.velocity = movement;
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void UpdateOnGroundServerRpc(bool value)
+    {
+        onGround = value;
+        animator.SetBool("Ground", value);
+    }
+
+    //grounded stuff
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground")) 
+        { 
+            UpdateOnGroundServerRpc(true);
+            GetComponent<PlayerAttack>().StopSlamAttack();
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground")) 
+        { 
+            UpdateOnGroundServerRpc(false);
+        }
     }
 }

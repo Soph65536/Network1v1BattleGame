@@ -50,5 +50,9 @@ public class PlayerGameStart : NetworkBehaviour
         //set collider size/offset based on current character
         capsuleCollider.size = selectedCharacter.GetCharacterColliderSize();
         capsuleCollider.offset = selectedCharacter.GetCharacterColliderOffset();
+
+        //allow movement and attacking now
+        if (GetComponent<PlayerMovement>()) GetComponent<PlayerMovement>().canMove = true;
+        if (GetComponent<PlayerAttack>()) GetComponent<PlayerAttack>().canAttack = true;
     }
 }

@@ -21,7 +21,10 @@ public class PlayerSpawn : NetworkBehaviour
         {
             //enable player scripts if owner
             GetComponent<PlayerMovement>().enabled = true;
+            GetComponent<PlayerMovement>().canMove = false;
+
             GetComponent<PlayerAttack>().enabled = true;
+            GetComponent<PlayerAttack>().canAttack = false;
         }
     }
 }

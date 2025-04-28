@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8601de086f1ec014d983861a6cc9ce43
+guid: 6a0dc7ff03cbbb245925f5027c42e243
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,24 +93,11 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SpiderUpperLight1_0
+      name: SpderSlam_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +111,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 818de57bcda46ca4c8970ee1b6ea20af
-      internalID: -1633159085
+      spriteID: 859e5e2fcd7a51f498096ca1764af92f
+      internalID: 599511774
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SpiderUpperLight1_1
+      name: SpderSlam_1
       rect:
         serializedVersion: 2
         x: 512
@@ -145,14 +132,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46c5b1e01b25329418ce9152180be3d6
-      internalID: -1802940319
+      spriteID: b7d538e6ebe1c6e4383f6d8ec6237b45
+      internalID: -1108163366
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SpiderUpperLight1_2
+      name: SpderSlam_2
       rect:
         serializedVersion: 2
         x: 1024
@@ -166,50 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 72552e0bae6a29a47bd82730538d22e1
-      internalID: 1343022679
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SpiderUpperLight1_3
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 0
-        width: 512
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ea66ec17bf876a442afe9ce0e06c9c42
-      internalID: 472173281
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SpiderUpperLight1_4
-      rect:
-        serializedVersion: 2
-        x: 2048
-        y: 0
-        width: 512
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1403fd1be4f50774cb95ae88240e407a
-      internalID: -384796899
+      spriteID: de2b9323c27fb454cb7d6d864667f4be
+      internalID: 1454668893
       vertices: []
       indices: 
       edges: []
@@ -217,7 +162,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 717f8e2399522e94aa79801f7e9fcf4f
     internalID: 0
     vertices: []
     indices: 
@@ -225,11 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      SpiderUpperLight1_0: -1633159085
-      SpiderUpperLight1_1: -1802940319
-      SpiderUpperLight1_2: 1343022679
-      SpiderUpperLight1_3: 472173281
-      SpiderUpperLight1_4: -384796899
+      SpderSlam_0: 599511774
+      SpderSlam_1: -1108163366
+      SpderSlam_2: 1454668893
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

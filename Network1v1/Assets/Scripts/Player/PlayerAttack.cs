@@ -5,15 +5,26 @@ using UnityEngine;
 
 public class PlayerAttack : NetworkBehaviour
 {
+    const int slamDamage = 8;
+
+    const int lightUpper1Damage = 7;
+    const int lightUpper2Damage = 10;
+    const int lightUpper3Damage = 15;
+
+    const float lightUpperAnimationTime = 0.5f; //how long it takes for light upper animation to play
+    const float lightUpperComboTime = 0.3f; //how long after light upper finishing can the combo be triggered
+    const int maxLightUpperCombo = 3;
+
     public bool canAttack;
 
     private Animator animator;
 
     public int damageMultipler;
 
+    [SerializeField] public bool slamRunning;
+
     [SerializeField] private bool lightUpperRunning;
     [SerializeField] private int lightUpperComboNumber;
-    const int maxLightUpperCombo = 3;
 
     private void Awake()
     {
@@ -24,7 +35,7 @@ public class PlayerAttack : NetworkBehaviour
         //get animator
         animator = GetComponentInChildren<Animator>();
 
-        damageMultipler = 1;
+        slamRunning = false;
 
         lightUpperRunning = false;
         lightUpperComboNumber = 0;
@@ -33,14 +44,36 @@ public class PlayerAttack : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!IsOwner) return;
-
         if (canAttack)
         {
-            if (Input.GetMouseButtonDown(0) && !lightUpperRunning)
+            if (Input.GetMouseButtonDown(0) && !slamRunning && !lightUpperRunning) //if not attacking and get lmb then attack
             {
-                StartCoroutine("WaitForLightUpperCombo");
-                LightUpperAttackServerRpc(lightUpperComboNumber);
+                HitCollider hitCollider = GetComponentInChildren<HitCollider>();
+
+                if (GetComponent<PlayerMovement>().onGround) //if on ground run light upper
+                {
+                    StartCoroutine("WaitForLightUpperCombo");
+
+                    switch (lightUpperComboNumber) //set damage for specific light upper combo
+                    {
+                        case 2:
+                            hitCollider.SetDamageServerRpc(10);
+                            break;
+                        case 3:
+                            hitCollider.SetDamageServerRpc(15);
+                            break;
+                        default:
+                            hitCollider.SetDamageServerRpc(7);
+                            break;
+                    }
+
+                    LightUpperAttackServerRpc(lightUpperComboNumber); //run light upper attack
+                }
+                else //otherwise run slam attack
+                {
+                    hitCollider.SetDamageServerRpc(slamDamage); //set damage for slam attack
+                    SlamAttackServerRpc(true); //start slam attack
+                }
             }
         }
     }
@@ -61,11 +94,12 @@ public class PlayerAttack : NetworkBehaviour
         int currentComboNumber = lightUpperComboNumber;
 
         //wait for duration of animation to run then stop light upper running
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(lightUpperAnimationTime);
         lightUpperRunning = false;
 
+
         //wait for the max time between combos
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(lightUpperComboTime);
 
         //if combo state has stayed the same then light upper hasn't been pressed
         //so reset the combo
@@ -74,6 +108,7 @@ public class PlayerAttack : NetworkBehaviour
             lightUpperComboNumber = 0;
         }
     }
+
 
     [Rpc(SendTo.Server)]
     private void LightUpperAttackServerRpc(int comboNumber)
@@ -90,5 +125,17 @@ public class PlayerAttack : NetworkBehaviour
                 animator.SetTrigger("Light Upper 1");
                 break;
         }
+    }
+
+    public void StopSlamAttack()
+    {
+        SlamAttackServerRpc(false);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void SlamAttackServerRpc(bool running)
+    {
+        slamRunning = running;
+        animator.SetBool("Plunge", running);
     }
 }
