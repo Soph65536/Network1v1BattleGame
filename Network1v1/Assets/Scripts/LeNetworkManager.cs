@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using System;
 
+[Obsolete]
 public class LeNetworkManager : NetworkManager
 {
     //gameobject prefabs and instances

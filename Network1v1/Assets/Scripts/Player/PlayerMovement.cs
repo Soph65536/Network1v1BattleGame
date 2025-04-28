@@ -10,10 +10,10 @@ public class PlayerMovement : NetworkBehaviour
 
     public bool onGround;
 
-    private float moveSpeed = 2.5f;
+    private float moveSpeed = 0.025f;
     private float jumpHeight = 3;
 
-    private float slamAttackSpeed = 5;
+    private float slamAttackSpeed = 7;
 
     private Animator animator;
     private Rigidbody2D rb;
@@ -36,28 +36,28 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (canMove)
         {
-            //if doing plunge attack then call jump downwards
+            //leftrightmovement
+            if (Input.GetKey(KeyCode.A))
+            {
+                MoveServerRpc(Vector3.left * moveSpeed);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                MoveServerRpc(Vector3.right * moveSpeed);
+            }
+
+            //if doing slam attack then call jump downwards
             if (GetComponent<PlayerAttack>().slamRunning)
             {
-                JumpServerRpc(Vector2.down * jumpHeight);
+                JumpServerRpc(Vector2.down * slamAttackSpeed);
             }
-            //otherwise can move normally
+            //otherwise can jump
             else
             {
-                //leftrightmovement
-                if (Input.GetKey(KeyCode.A))
-                {
-                    MoveServerRpc(Vector3.left * moveSpeed * Time.deltaTime);
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    MoveServerRpc(Vector3.right * moveSpeed * Time.deltaTime);
-                }
-
                 //jump movement
                 if (Input.GetKey(KeyCode.W))
                 {
-                    JumpServerRpc(Vector2.up * slamAttackSpeed);
+                    JumpServerRpc(Vector2.up * jumpHeight);
                 }
             }
         }

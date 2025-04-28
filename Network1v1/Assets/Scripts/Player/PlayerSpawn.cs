@@ -19,6 +19,9 @@ public class PlayerSpawn : NetworkBehaviour
 
         if (IsOwner)
         {
+            //cap frame rate at 60fps to help avoid desync
+            Application.targetFrameRate = 60;
+
             //enable player scripts if owner
             GetComponent<PlayerMovement>().enabled = true;
             GetComponent<PlayerMovement>().canMove = false;

@@ -30,7 +30,6 @@ public class PlayerGameStart : NetworkBehaviour
     private void SetupPlayers()
     {
         CurrentPlayerCharacter selectedCharacter = GetComponent<CurrentPlayerCharacter>();
-        PlayerHealth characterHealth = GetComponent<PlayerHealth>();
 
         //Debug.Log(selectedCharacter.IsLocalPlayer+"\n"+selectedCharacter.currentCharacter.Value+"\n"+selectedCharacter.currentSide.Value);
 
