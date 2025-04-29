@@ -10,7 +10,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public bool onGround;
 
-    private float moveSpeed = 0.025f;
+    private float moveSpeed = 0.035f;
     private float jumpHeight = 3;
 
     private float slamAttackSpeed = 7;
