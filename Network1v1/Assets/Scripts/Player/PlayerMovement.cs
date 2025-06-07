@@ -8,12 +8,13 @@ public class PlayerMovement : NetworkBehaviour
 {
     public bool canMove;
 
-    public bool onGround;
+    public bool onGround {  get; private set; }
 
-    private float moveSpeed = 0.035f;
-    private float jumpHeight = 3;
+    private float horizontalInput = 0;
+    private float moveSpeed = 3.5f;
+    private float jumpHeight = 400;
 
-    private float slamAttackSpeed = 7;
+    private float slamAttackSpeed = 700;
 
     private Animator animator;
     private Rigidbody2D rb;
@@ -37,14 +38,8 @@ public class PlayerMovement : NetworkBehaviour
         if (canMove)
         {
             //leftrightmovement
-            if (Input.GetKey(KeyCode.A))
-            {
-                MoveServerRpc(Vector3.left * moveSpeed);
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                MoveServerRpc(Vector3.right * moveSpeed);
-            }
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+            MoveServerRpc(Vector3.right * horizontalInput * moveSpeed);
 
             //if doing slam attack then call jump downwards
             if (GetComponent<PlayerAttack>().slamRunning)
@@ -66,13 +61,13 @@ public class PlayerMovement : NetworkBehaviour
     [Rpc(SendTo.Server)]
     private void MoveServerRpc(Vector3 movement)
     {
-        transform.position += movement;
+        transform.position += movement * Time.deltaTime;
     }
 
     [Rpc(SendTo.Server)]
     private void JumpServerRpc(Vector2 movement)
     {
-        rb.velocity = movement;
+        rb.velocity = movement * Time.deltaTime;
     }
 
     [Rpc(SendTo.Everyone)]
